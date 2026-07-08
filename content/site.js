@@ -61,7 +61,28 @@ const SITE = {
   whatsapp: "919312255530",
   email: "samir@casamir.in",
   website: "www.casamir.in",
-  otherFirms: "Other member firms: Sunny Goel & Company, Ghaziabad, U.P.  |  Harre Chauhaan & Co., Gurugram, Haryana",
+  /* ---- Member firm offices (shown as cards on the Contact page) ----
+     To add another firm, copy one whole block from { to }, and paste
+     above the closing ]. Leave email/website/phone as "" to hide
+     that line on the card. */
+  memberFirms: [
+    {
+      firm: "Sunny Goel and Company",
+      person: "CA. Sunny Goel",
+      address: "Plot No 413, First Floor, Sector 5, Vasundhara, Ghaziabad, Uttar Pradesh 201012",
+      email: "sunnygoel.office@gmail.com",
+      website: "www.casunnygoel.com",
+      phone: "+91 98993 36632"
+    },
+    {
+      firm: "Harre Chauhaan & Co",
+      person: "CA. Harre Chauhaan",
+      address: "A 904, Mapsko Paradise, Sector 83, Gurugram, Haryana 122005",
+      email: "",
+      website: "",
+      phone: "+91 96432 02541"
+    }
+  ],
 
   /* Formspree form ID — sign up free at formspree.io, create a form,
      and paste its ID here (looks like: xabcdefg). Until then the

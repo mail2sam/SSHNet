@@ -160,10 +160,25 @@ function renderContact() {
     <div class="c-line"><b>Phone</b><span><a href="tel:${SITE.phone.replace(/\s/g, "")}">${esc(SITE.phone)}</a></span></div>
     <div class="c-line"><b>Email</b><span><a href="mailto:${SITE.email}">${esc(SITE.email)}</a></span></div>
     <div class="c-line"><b>Website</b><span><a href="https://${esc(SITE.website)}" target="_blank" rel="noopener">${esc(SITE.website)}</a></span></div>
-    <p class="small">${esc(SITE.otherFirms)}</p>
     <div class="map-box"><iframe loading="lazy"
       src="https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery)}&output=embed"
       title="Office location map"></iframe></div>`;
+
+  const firmsBox = document.getElementById("firm-offices");
+  if (firmsBox && SITE.memberFirms && SITE.memberFirms.length) {
+    firmsBox.innerHTML = `
+      <h3 class="firms-title">Member Firm Offices</h3>
+      <div class="firm-grid">${SITE.memberFirms.map(f => `
+        <div class="c-card firm-card">
+          <h3>${esc(f.firm)}</h3>
+          <div class="c-line"><b>Contact</b><span>${esc(f.person)}</span></div>
+          <div class="c-line"><b>Address</b><span>${esc(f.address)}</span></div>
+          ${f.phone ? `<div class="c-line"><b>Phone</b><span><a href="tel:${f.phone.replace(/\s/g, "")}">${esc(f.phone)}</a></span></div>` : ""}
+          ${f.email ? `<div class="c-line"><b>Email</b><span><a href="mailto:${f.email}">${esc(f.email)}</a></span></div>` : ""}
+          ${f.website ? `<div class="c-line"><b>Website</b><span><a href="https://${esc(f.website)}" target="_blank" rel="noopener">${esc(f.website)}</a></span></div>` : ""}
+        </div>`).join("")}
+      </div>`;
+  }
 
   const form = document.getElementById("c-form");
   if (!SITE.formspreeId) {

@@ -141,6 +141,10 @@ h2.sec-title{font-family:var(--serif);font-size:36px;color:var(--navy);text-alig
 .c-card .small{font-size:13px;color:var(--muted);margin-top:16px;border-top:1px solid #efe9dc;padding-top:14px}
 .map-box{margin-top:26px;border:1px solid #e6e0d3}
 .map-box iframe{width:100%;height:280px;border:0;display:block}
+.firms-title{font-family:var(--serif);font-size:24px;color:var(--navy);text-align:center;margin:56px 0 24px;position:relative}
+.firms-title::after{content:"";display:block;width:60px;height:2px;background:var(--gold);margin:12px auto 0}
+.firm-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:900px){.firm-grid{grid-template-columns:1fr}}
 form .field{margin-bottom:16px}
 form label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px;letter-spacing:.3px}
 form input,form textarea{width:100%;padding:12px 14px;border:1px solid #d8d2c4;background:var(--paper);font-family:var(--sans);font-size:14.5px}
