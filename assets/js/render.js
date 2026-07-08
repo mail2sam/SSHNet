@@ -39,7 +39,6 @@ function renderHeader(active) {
         <img src="${ROOT}assets/images/logo.png" alt="${esc(SITE.name)} logo">
         <div class="brand-name">${esc(SITE.name)}<small>${esc(SITE.subName)}</small></div>
       </a>
-      <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
       <ul class="nav-links">${nav}</ul>
     </div></nav>`;
 }
