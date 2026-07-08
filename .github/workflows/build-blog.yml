@@ -1,0 +1,35 @@
+# Rebuilds the blog listing page automatically on every push.
+# Workflow: export your blog post HTML -> drop it into blog/<slug>/index.html
+# -> git push -> this action regenerates blog/index.html and commits it.
+name: Build blog index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "blog/**"
+      - "scripts/build_blog_index.py"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild blog index
+        run: python scripts/build_blog_index.py
+
+      - name: Commit regenerated index
+        run: |
+          git config user.name "blog-index-bot"
+          git config user.email "actions@github.com"
+          git add blog/index.html blog/posts.json
+          git diff --cached --quiet || git commit -m "Auto-rebuild blog index"
+          git push

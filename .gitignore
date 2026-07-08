@@ -1,0 +1,15 @@
+# Design mockups used during development (not part of the live site)
+design-1-heritage-navy.html
+design-2-modern-blue.html
+design-3-slate-emerald.html
+
+# Helper notes for local use
+WHERE-TO-PUT-YOUR-FILES.txt
+assets/images/team/PUT-PROFILE-PHOTOS-HERE.txt
+assets/images/office/PUT-OFFICE-PHOTOS-HERE.txt
+assets/images/clients/PUT-CLIENT-LOGOS-HERE.txt
+blog/PUT-BLOG-POSTS-HERE.txt
+
+# OS clutter
+Thumbs.db
+desktop.ini

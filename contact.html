@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | SSH Network — Chartered Accountants</title>
+<meta name="description" content="Contact SSH Network — Chartered Accountants. Offices in New Delhi (Pitampura), Ghaziabad and Gurgaon.">
+<link rel="icon" href="assets/images/logo.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<!-- ADDRESS / PHONE / EMAIL come from content/site.js — edit that file, not this one. -->
+<body data-root="./">
+
+<div id="site-header"></div>
+
+<div class="page-hero">
+  <h1>Contact Us</h1>
+  <p>Tell us your requirement — we'll structure the right engagement.</p>
+</div>
+
+<section><div class="wrap">
+  <div class="contact-grid">
+
+    <div class="c-card" id="c-details"></div>
+
+    <div class="c-card">
+      <h3>Send a Message</h3>
+      <form id="c-form" method="POST" novalidate>
+        <div class="field">
+          <label for="f-name">Name *</label>
+          <input id="f-name" name="name" required>
+          <div class="form-err">Please enter your name.</div>
+        </div>
+        <div class="field">
+          <label for="f-email">Email *</label>
+          <input id="f-email" type="email" name="email" required>
+          <div class="form-err">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone">
+        </div>
+        <div class="field">
+          <label for="f-subject">Subject *</label>
+          <input id="f-subject" name="subject" required>
+          <div class="form-err">Please enter a subject.</div>
+        </div>
+        <div class="field">
+          <label for="f-message">Message *</label>
+          <textarea id="f-message" name="message" rows="5" required></textarea>
+          <div class="form-err">Please enter your message.</div>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+
+  </div>
+</div></section>
+
+<footer id="site-footer"></footer>
+
+<script src="content/site.js"></script>
+<script src="assets/js/render.js"></script>
+<script>renderHeader("Contact Us"); renderContact(); renderFooter();</script>
+<script src="assets/js/effects.js"></script>
+</body>
+</html>

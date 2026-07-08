@@ -1,0 +1,60 @@
+HOW TO CHANGE TEXT ON THE WEBSITE
+==================================
+
+ALL the words on the website live in 3 simple files inside the
+"content" folder. You NEVER need to touch the design files.
+
+  content\site.js       -> firm name, tagline, hero text, about
+                           paragraphs, contact details, footer,
+                           experience list, phone, email, address
+  content\team.js       -> every team member (name, bio, photo)
+  content\services.js   -> every service category and item
+
+TO EDIT TEXT (step by step)
+---------------------------
+1. Open the file in Notepad (right-click -> Open with -> Notepad).
+2. Find the text you want to change (Ctrl+F to search).
+3. Change ONLY the words between the quote marks "...".
+   Example:  phone: "+91 93122 55530",
+             Change just the number, keep the quotes and the comma.
+4. Save the file (Ctrl+S).
+5. Open the website in your browser and press Ctrl+F5 (hard refresh).
+   Your new text appears.
+6. When happy, push to GitHub (see README.md) and the live site
+   updates in about a minute.
+
+TO ADD A NEW TEAM MEMBER
+------------------------
+1. Put their photo in assets\images\team\  (e.g. new-person.jpg)
+2. Open content\team.js in Notepad.
+3. Copy one whole member block - everything from a  {  down to its
+   matching  },  - and paste it just above the closing  ];
+4. Edit the details. Set "photo" to assets/images/team/new-person.jpg
+5. Set "order" to control position (1 shows first).
+6. Save. Done - the member appears on Home and Our Team pages.
+
+TO ADD A NEW SERVICE
+--------------------
+1. Open content\services.js in Notepad.
+2. To add an item inside an existing category: copy one
+   { name: "...", desc: "..." },  line and edit it.
+3. To add a whole new category: copy one whole category block
+   ( { title... items: [...] }, ) and paste above the closing ];
+4. Save. It appears on the Home page cards and Services page.
+
+TO ADD A BLOG POST
+------------------
+1. Export your designed blog post as an HTML file.
+2. Create a new folder inside blog\ with a short name,
+   e.g.  blog\ai-for-auditors\
+3. Put your file inside it renamed to  index.html
+4. Push to GitHub. The blog listing page rebuilds itself.
+   (To preview locally first: run
+    python scripts\build_blog_index.py )
+
+GOLDEN RULES
+------------
+* Only change text between "quotes".
+* Never delete quotes, commas, colons, braces { } or brackets [ ].
+* If a page suddenly goes blank after an edit, you likely removed
+  a quote or comma - press Ctrl+Z in Notepad to undo, or ask Claude.
