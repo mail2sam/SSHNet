@@ -1,8 +1,14 @@
 {
-  "ais-tis": {
+  "CA-AIS26": {
     "date": "2026-07-30"
   },
-  "CA-AIS26": {
+  "CFO-Office": {
+    "date": "2026-07-30"
+  },
+  "ClaudeAgent": {
+    "date": "2026-07-30"
+  },
+  "ais-tis": {
     "date": "2026-07-30"
   },
   "caclone": {
@@ -11,13 +17,7 @@
   "cacrm": {
     "date": "2026-07-30"
   },
-  "CFO-Office": {
-    "date": "2026-07-30"
-  },
   "cfotostay": {
-    "date": "2026-07-30"
-  },
-  "ClaudeAgent": {
     "date": "2026-07-30"
   }
 }
