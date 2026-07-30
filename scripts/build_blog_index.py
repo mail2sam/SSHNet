@@ -36,7 +36,9 @@ def scan_posts():
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
     posts = []
-    for post_file in sorted(BLOG_DIR.glob("*/index.html")):
+    # sort case-insensitively so Windows (local) and Linux (GitHub Action)
+    # produce identical output and don't ping-pong commits
+    for post_file in sorted(BLOG_DIR.glob("*/index.html"), key=lambda p: str(p).lower()):
         slug = post_file.parent.name
         html = post_file.read_text(encoding="utf-8", errors="ignore")
         title = extract(r"<title[^>]*>(.*?)</title>", html, slug.replace("-", " ").title())
@@ -56,7 +58,7 @@ def scan_posts():
 
     # drop manifest entries whose folder was deleted
     manifest = {p["slug"]: manifest[p["slug"]] for p in posts}
-    MANIFEST.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    MANIFEST.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
 
     posts.sort(key=lambda p: (p["date"], p["slug"]), reverse=True)
     return posts
