@@ -87,7 +87,7 @@ const SITE = {
   /* Formspree form ID — sign up free at formspree.io, create a form,
      and paste its ID here (looks like: xabcdefg). Until then the
      contact form shows a notice instead of sending. */
-  formspreeId: "",
+  formspreeId: "xnjeynye",
 
   /* Google Maps: the address the map should point to */
   mapQuery: "Neelkanth Plaza, Community Centre, Road No 44, Pitampura, New Delhi 110034",
