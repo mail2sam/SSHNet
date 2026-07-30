@@ -1,0 +1,791 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Claude CFO Team — NexAssure AI</title>
+<meta name="description" content="Five specialist finance agents on one Claude seat. A NexAssure AI field guide to building an orchestrated agentic CFO team with Claude Projects + Skills.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy-900:#0A1A2F; --navy-800:#0F2540; --navy-700:#163450; --navy-600:#1E436B;
+    --paper:#F8FAFC; --paper-2:#EDF1F6; --paper-3:#E3E9F0;
+    --gold:#C9A14A; --gold-bright:#E6C56E; --gold-deep:#A8842F;
+    --ink:#13202E; --slate:#516373; --slate-2:#74838f;
+    --line-d:rgba(201,161,74,.26); --line-l:rgba(19,32,46,.12);
+    --display:'Fraunces',Georgia,'Times New Roman',serif;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.08;margin:0;letter-spacing:-.01em}
+  p{margin:0 0 1.1em}
+  a{color:inherit}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);font-weight:500}
+  .eyebrow.on-dark{color:var(--gold-bright)}
+  .gold{color:var(--gold-deep)}
+
+  /* ---------- NAV / INDEX ---------- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,26,47,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line-d)}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:22px}
+  .brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none;font-weight:600;flex:0 0 auto}
+  .brand .mark{width:26px;height:26px;flex:0 0 auto}
+  .brand span{font-family:var(--display);font-size:18px;letter-spacing:.01em}
+  .brand b{color:var(--gold-bright);font-weight:600}
+  .nav-links{display:flex;gap:5px;margin-left:auto;align-items:center;flex-wrap:wrap}
+  .nav-links a{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:#c7d3e0;
+    text-decoration:none;padding:7px 11px;border-radius:7px;transition:color .18s,background .18s;white-space:nowrap}
+  .nav-links a:hover{color:#fff;background:rgba(201,161,74,.14)}
+  .nav-links a.active{color:var(--navy-900);background:var(--gold-bright)}
+  .nav-cta{font-family:var(--sans);font-weight:600;font-size:13px;color:var(--navy-900)!important;
+    background:var(--gold-bright);padding:9px 16px!important;border-radius:8px}
+  .nav-cta:hover{background:#fff!important}
+  .menu-toggle{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;background:
+      radial-gradient(1200px 620px at 76% -8%, rgba(201,161,74,.16), transparent 60%),
+      radial-gradient(900px 500px at 6% 110%, rgba(30,67,107,.5), transparent 55%),
+      var(--navy-900);
+    color:#eaf0f7;overflow:hidden;border-bottom:1px solid var(--line-d)}
+  .hero-grid{max-width:var(--maxw);margin:0 auto;padding:66px 28px 78px;
+    display:grid;grid-template-columns:1.06fr .94fr;gap:48px;align-items:center}
+  .hero .kicker{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;
+    padding:7px 13px;border:1px solid var(--line-d);border-radius:999px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
+  .hero .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 12px var(--gold-bright)}
+  .hero h1{font-size:clamp(40px,6vw,68px);color:#fff;font-weight:600;letter-spacing:-.02em}
+  .hero h1 .em{font-style:italic;color:var(--gold-bright);font-weight:500}
+  .hero .lede{font-size:19.5px;color:#bccadb;margin-top:22px;max-width:38ch}
+  .hero .lede b{color:#eef3f9;font-weight:600}
+  .hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;
+    text-decoration:none;padding:13px 22px;border-radius:10px;transition:transform .16s,box-shadow .16s,background .16s}
+  .btn-primary{background:var(--gold-bright);color:var(--navy-900);box-shadow:0 8px 30px rgba(201,161,74,.28)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(201,161,74,.42)}
+  .btn-ghost{border:1px solid var(--line-d);color:#dce5ef}
+  .btn-ghost:hover{background:rgba(255,255,255,.05);transform:translateY(-2px)}
+  .hero-meta{display:flex;gap:26px;margin-top:36px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:#8ea0b4}
+  .hero-meta b{display:block;font-family:var(--display);font-size:23px;color:var(--gold-bright);font-weight:600;letter-spacing:0}
+  .byline{margin-top:34px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:#7e90a4;text-transform:uppercase}
+  .byline b{color:var(--gold-bright);font-weight:500}
+
+  /* constellation */
+  .constellation{position:relative}
+  .constellation svg{width:100%;height:auto;display:block;overflow:visible}
+  .node-label{font-family:var(--mono);font-size:10.5px;fill:#cdd9e6;letter-spacing:.02em}
+  .node-core{font-family:var(--display);font-size:13px;fill:#fff;font-weight:600}
+  .spoke{stroke:var(--gold);stroke-width:1.3;fill:none;opacity:.55;
+    stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+    animation:draw 1.5s ease forwards}
+  .pnode{transform-box:fill-box;transform-origin:center;animation:pulse 4.4s ease-in-out infinite}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes pulse{0%,100%{opacity:.82}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.spoke{animation:none;stroke-dashoffset:0}.pnode{animation:none}}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:84px 0;border-bottom:1px solid var(--line-l)}
+  .sec-head{max-width:760px;margin-bottom:46px}
+  .sec-head .eyebrow{display:block;margin-bottom:16px}
+  .sec-head h2{font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em}
+  .sec-head p{font-size:18.5px;color:var(--slate);margin-top:18px}
+  .dark{background:var(--navy-900);color:#e7eef6;border-bottom:1px solid var(--line-d)}
+  .dark .sec-head h2{color:#fff}
+  .dark .sec-head p{color:#aebccd}
+  .dark .eyebrow{color:var(--gold-bright)}
+
+  /* contents strip */
+  .toc{background:var(--paper-2);padding:30px 0}
+  .toc-inner{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .toc .eyebrow{flex:0 0 auto}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;counter-reset:t}
+  .toc li{counter-increment:t}
+  .toc a{display:inline-flex;align-items:baseline;gap:8px;text-decoration:none;font-size:14px;color:var(--ink);
+    border:1px solid var(--line-l);background:#fff;border-radius:8px;padding:8px 13px;transition:border-color .18s,transform .14s}
+  .toc a:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .toc a::before{content:counter(t,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--gold-deep);font-weight:600}
+
+  /* lead / provocation */
+  .lead-quote{font-family:var(--display);font-size:clamp(24px,3.2vw,33px);line-height:1.32;
+    font-weight:500;color:var(--ink);max-width:880px;letter-spacing:-.01em}
+  .lead-quote em{font-style:italic;color:var(--gold-deep)}
+  .lead-body{max-width:720px;margin-top:30px;color:var(--slate);font-size:18px}
+  .callout{margin-top:34px;border-left:3px solid var(--gold);background:var(--paper-2);
+    padding:22px 26px;border-radius:0 12px 12px 0;font-size:16px;color:var(--ink)}
+  .callout b{color:var(--gold-deep)}
+
+  /* benefits grid */
+  .grid{display:grid;gap:20px}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .card{background:#fff;border:1px solid var(--line-l);border-radius:16px;padding:28px;
+    transition:transform .2s,box-shadow .2s,border-color .2s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(15,37,64,.1);border-color:var(--gold)}
+  .card .num{font-family:var(--mono);font-size:12px;color:var(--gold-deep);font-weight:600;letter-spacing:.08em}
+  .card h3{font-size:21px;margin:14px 0 9px}
+  .card p{color:var(--slate);font-size:15.5px;margin:0}
+  .dark .card{background:var(--navy-800);border-color:var(--line-d)}
+  .dark .card h3{color:#fff}
+  .dark .card p{color:#a9b8ca}
+  .dark .card:hover{box-shadow:0 18px 44px rgba(0,0,0,.4)}
+
+  /* team specialists */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .spec{position:relative;background:var(--navy-800);border:1px solid var(--line-d);border-radius:16px;
+    padding:26px 24px;overflow:hidden;transition:transform .2s,border-color .2s}
+  .spec:hover{transform:translateY(-4px);border-color:var(--gold)}
+  .spec::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--gold),var(--gold-deep))}
+  .spec .glyph{width:42px;height:42px;border:1px solid var(--gold);border-radius:10px;display:flex;
+    align-items:center;justify-content:center;color:var(--gold-bright);margin-bottom:16px}
+  .spec .role{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-bright)}
+  .spec h3{color:#fff;font-size:20px;margin:8px 0 10px}
+  .spec p{color:#a7b6c8;font-size:14.5px;margin:0}
+  .spec .skillname{font-family:var(--mono);font-size:11.5px;color:#7f93a9;margin-top:14px;display:block}
+
+  /* steps */
+  .step{display:grid;grid-template-columns:96px 1fr;gap:30px;padding:38px 0;border-top:1px solid var(--line-l)}
+  .step:first-of-type{border-top:0}
+  .step-no{font-family:var(--display);font-size:54px;font-weight:600;color:var(--paper-3);line-height:1;
+    position:sticky;top:90px;height:max-content}
+  .step h3{font-size:25px;margin-bottom:12px}
+  .step .step-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);display:block;margin-bottom:10px}
+  .step p{color:var(--slate);font-size:16.5px;max-width:70ch}
+  .step ul{margin:0 0 1em;padding-left:1.1em;color:var(--slate);font-size:16px}
+  .step li{margin:.4em 0}
+  .step b{color:var(--ink)}
+
+  /* code panel */
+  .code{margin:20px 0;border:1px solid var(--navy-700);border-radius:13px;overflow:hidden;background:#08111f}
+  .code-bar{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--navy-800);border-bottom:1px solid var(--navy-700)}
+  .code-bar .fn{font-family:var(--mono);font-size:12px;color:#9fb1c6;letter-spacing:.03em}
+  .code-bar .tag{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--gold-bright);
+    border:1px solid var(--line-d);padding:3px 9px;border-radius:6px;letter-spacing:.08em;text-transform:uppercase}
+  .code-bar .copy{cursor:pointer;font-family:var(--mono);font-size:11px;color:#aebccd;background:transparent;
+    border:1px solid var(--navy-600);border-radius:6px;padding:4px 10px;transition:.16s}
+  .code-bar .copy:hover{color:#fff;border-color:var(--gold)}
+  .code pre{margin:0;padding:18px 18px;overflow-x:auto;max-height:420px}
+  .code code{font-family:var(--mono);font-size:13px;line-height:1.7;color:#cdd9e6;white-space:pre}
+  .code .cm{color:#6f8197;font-style:italic}
+  .code .kw{color:var(--gold-bright)}
+
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:15.5px}
+  .tbl th,.tbl td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line-l);vertical-align:top}
+  .tbl thead th{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--slate-2);border-bottom:1.5px solid var(--gold)}
+  .tbl tbody tr:hover{background:var(--paper-2)}
+  .tbl .em{color:var(--gold-deep);font-weight:600}
+  .dark .tbl th,.dark .tbl td{border-bottom-color:var(--line-d);color:#cad7e4}
+  .dark .tbl thead th{color:var(--gold-bright)}
+  .dark .tbl tbody tr:hover{background:var(--navy-800)}
+
+  /* split for governance */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .pill-list{list-style:none;margin:0;padding:0}
+  .pill-list li{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line-l);font-size:15.5px;color:var(--slate)}
+  .pill-list li b{color:var(--ink);font-weight:600}
+  .pill-list .ic{flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:var(--paper-2);
+    color:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:600}
+
+  /* CTA band */
+  .band{background:
+      radial-gradient(900px 400px at 80% 0%, rgba(201,161,74,.18), transparent 60%),var(--navy-900);
+    text-align:center}
+  .band h2{color:#fff;font-size:clamp(28px,4vw,44px)}
+  .band p{color:#b6c4d6;max-width:58ch;margin:18px auto 30px;font-size:18px}
+
+  /* footer */
+  footer{background:var(--navy-900);color:#9fb1c6;padding:54px 0 40px;border-top:1px solid var(--line-d)}
+  .foot-top{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .foot-brand{display:flex;align-items:center;gap:12px;color:#fff;font-family:var(--display);font-size:21px}
+  .foot-brand b{color:var(--gold-bright);font-weight:600}
+  .foot-pub{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-bright);margin-top:14px}
+  .foot-note{max-width:46ch;font-size:13.5px;color:#7e90a4;margin-top:14px}
+  .foot-bottom{margin-top:38px;padding-top:22px;border-top:1px solid var(--line-d);
+    display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:12.5px;color:#6f8298;font-family:var(--mono);letter-spacing:.04em}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;padding:48px 28px 60px}
+    .constellation{max-width:480px;margin:0 auto}
+    .grid-3,.team-grid{grid-template-columns:1fr 1fr}
+    .split{grid-template-columns:1fr}
+  }
+  @media(max-width:720px){
+    body{font-size:16px}
+    .menu-toggle{display:inline-flex;margin-left:auto;background:transparent;border:1px solid var(--line-d);
+      color:#cfdae6;border-radius:8px;padding:8px 11px;font-family:var(--mono);font-size:12px;cursor:pointer}
+    .nav-links{display:none;flex-direction:column;align-items:stretch;width:100%;order:3;margin-left:0;gap:4px;padding-top:10px}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 12px}
+    .grid-3,.grid-2,.team-grid{grid-template-columns:1fr}
+    .step{grid-template-columns:1fr;gap:8px}
+    .step-no{position:static;font-size:40px}
+    section{padding:62px 0}
+    .hero-meta{gap:20px}
+  }
+</style>
+
+<!-- ===================== NAV / INDEX ===================== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" stroke="#C9A14A" stroke-width="1.3"/>
+        <path d="M16 4v24M4 16h24M8.2 8.2l15.6 15.6M23.8 8.2L8.2 23.8" stroke="#E6C56E" stroke-width="1.1" opacity=".75"/>
+        <circle cx="16" cy="16" r="3.4" fill="#E6C56E"/>
+      </svg>
+      <span>NexAssure <b>AI</b></span>
+    </a>
+    <button class="menu-toggle" aria-label="Toggle menu" id="menuBtn">MENU</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#intro">Intro</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#audience">Who it's for</a>
+      <a href="#team">The Team</a>
+      <a href="#build">Build Guide</a>
+      <a href="#economics">Economics</a>
+      <a href="#governance">Governance</a>
+      <a class="nav-cta" href="#start">Start building</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<a id="top"></a>
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="kicker"><span class="dot"></span>NexAssure AI · Field Guide</span>
+      <h1>Five CFOs.<br>One Claude seat.<br><span class="em">Zero new hires.</span></h1>
+      <p class="lede">We handed a single AI workspace the job of an entire finance office — tax, cash, margin, leakage, and exit — and wired it to run like an <b>orchestrated team</b>. Here's the exact build, from first click to board-ready.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#build">Read the build guide →</a>
+        <a class="btn btn-ghost" href="#team">Meet the five agents</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>5</b>specialist agents</div>
+        <div><b>1</b>orchestrator</div>
+        <div><b>₹0</b>extra headcount</div>
+        <div><b>~$20</b>/mo to run</div>
+      </div>
+      <div class="byline">Published &amp; developed by <b>NexAssure AI</b></div>
+    </div>
+
+    <div class="constellation" aria-label="The CFO Team architecture: one orchestrator wiring five specialist agents">
+      <svg viewBox="0 0 460 440" role="img">
+        <!-- spokes -->
+        <line class="spoke" style="--len:150" x1="230" y1="150" x2="92"  y2="92"/>
+        <line class="spoke" style="--len:150" x1="230" y1="150" x2="368" y2="92"/>
+        <line class="spoke" style="--len:140" x1="230" y1="170" x2="60"  y2="262"/>
+        <line class="spoke" style="--len:140" x1="230" y1="170" x2="400" y2="262"/>
+        <line class="spoke" style="--len:160" x1="230" y1="186" x2="230" y2="372"/>
+        <!-- central orchestrator -->
+        <g class="pnode">
+          <circle cx="230" cy="150" r="46" fill="#0F2540" stroke="#E6C56E" stroke-width="1.6"/>
+          <circle cx="230" cy="150" r="46" fill="none" stroke="#C9A14A" stroke-width="8" opacity=".14"/>
+          <path d="M230 122v56M202 150h56M210 130l40 40M250 130l-40 40" stroke="#E6C56E" stroke-width="1.2" opacity=".7"/>
+          <circle cx="230" cy="150" r="7" fill="#E6C56E"/>
+        </g>
+        <text class="node-core" x="230" y="214" text-anchor="middle">Orchestrator</text>
+        <text class="node-label" x="230" y="231" text-anchor="middle" fill="#8ea0b4">Claude Project</text>
+
+        <!-- specialist nodes -->
+        <g class="pnode" style="animation-delay:.3s">
+          <circle cx="92" cy="92" r="30" fill="#0F2540" stroke="#C9A14A" stroke-width="1.3"/>
+          <circle cx="92" cy="92" r="4" fill="#C9A14A"/></g>
+        <text class="node-label" x="92" y="142" text-anchor="middle">Tax Strategist</text>
+
+        <g class="pnode" style="animation-delay:.6s">
+          <circle cx="368" cy="92" r="30" fill="#0F2540" stroke="#C9A14A" stroke-width="1.3"/>
+          <circle cx="368" cy="92" r="4" fill="#C9A14A"/></g>
+        <text class="node-label" x="368" y="142" text-anchor="middle">Cash Flow</text>
+
+        <g class="pnode" style="animation-delay:.9s">
+          <circle cx="60" cy="262" r="30" fill="#0F2540" stroke="#C9A14A" stroke-width="1.3"/>
+          <circle cx="60" cy="262" r="4" fill="#C9A14A"/></g>
+        <text class="node-label" x="60" y="312" text-anchor="middle">Margin Analyst</text>
+
+        <g class="pnode" style="animation-delay:1.2s">
+          <circle cx="400" cy="262" r="30" fill="#0F2540" stroke="#C9A14A" stroke-width="1.3"/>
+          <circle cx="400" cy="262" r="4" fill="#C9A14A"/></g>
+        <text class="node-label" x="400" y="312" text-anchor="middle">Leak Detector</text>
+
+        <g class="pnode" style="animation-delay:1.5s">
+          <circle cx="230" cy="372" r="30" fill="#0F2540" stroke="#C9A14A" stroke-width="1.3"/>
+          <circle cx="230" cy="372" r="4" fill="#C9A14A"/></g>
+        <text class="node-label" x="230" y="422" text-anchor="middle">Exit Planner</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTENTS ===================== -->
+<div class="toc">
+  <div class="wrap toc-inner">
+    <span class="eyebrow">On this page</span>
+    <ol>
+      <li><a href="#intro">The thesis</a></li>
+      <li><a href="#benefits">Why it works</a></li>
+      <li><a href="#audience">Who it's for</a></li>
+      <li><a href="#team">The five agents</a></li>
+      <li><a href="#build">The build guide</a></li>
+      <li><a href="#economics">The economics</a></li>
+      <li><a href="#governance">Governance</a></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ===================== INTRO ===================== -->
+<section id="intro">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">01 — The thesis</span>
+      <h2>Most founders treat the CFO function as a hiring problem. It isn't — not yet.</h2>
+    </div>
+    <p class="lead-quote reveal">Before you can justify a full-time CFO, what you actually need is <em>leverage</em> — the ability to run a tax scenario, refresh a cash forecast, pressure-test unit economics, hunt for leaks, and model an exit, <em>repeatedly and cheaply.</em></p>
+    <div class="lead-body reveal">
+      <p>That is not one job. It is five disciplines that happen to report to one person. And five disciplines is exactly what an orchestrated agentic workflow is built to handle.</p>
+      <p>This guide shows how to assemble a <b>Claude CFO Team</b> — an orchestrator plus five specialist agents — on the low-code surface of <b>Claude Projects + Skills</b>. You start by clicking buttons. You finish with versioned skill files, deterministic code for the math, and a governance layer that keeps a regulated profession safe.</p>
+    </div>
+    <div class="callout reveal"><b>One honest line up front.</b> This does not replace your Chartered Accountant's signature or your judgment. It compresses the 80% of analysis that is mechanical, so the human 20% — judgment, sign-off, accountability — is faster and sharper. Built that way, it is an asset. Built as an oracle, it is a liability.</div>
+  </div>
+</section>
+
+<!-- ===================== BENEFITS ===================== -->
+<section id="benefits" class="dark">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">02 — Why it works</span>
+      <h2>The leverage, in five moves</h2>
+      <p>A two-person finance function starts operating like a five-person one — and a founder with no finance hire can produce board-grade analysis on demand.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal"><span class="num">01</span><h3>Hours, not weeks</h3><p>No code to ship. Configure a Project, upload five skill files, and the team is live the same afternoon.</p></div>
+      <div class="card reveal"><span class="num">02</span><h3>Runs on one seat</h3><p>The marginal cost is a single Claude subscription — not API bills, infrastructure, or a new payroll line.</p></div>
+      <div class="card reveal"><span class="num">03</span><h3>Math you can trust</h3><p>Every figure is computed by bundled Python in a sandbox, never improvised. Assumptions are always shown.</p></div>
+      <div class="card reveal"><span class="num">04</span><h3>One auditable thread</h3><p>Each analysis traces back to its source files. No silent hand-offs — a single coherent reasoner with a human in the loop.</p></div>
+      <div class="card reveal"><span class="num">05</span><h3>India-first, extensible</h3><p>Grounded in the Income-tax Act, GST and Companies Act — and forkable to any jurisdiction by swapping one skill.</p></div>
+      <div class="card reveal"><span class="num">06</span><h3>Nothing thrown away</h3><p>The same skill files graduate to the Claude Agent SDK later, when volume justifies real automation and live integrations.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUDIENCE ===================== -->
+<section id="audience">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">03 — Who it's for</span>
+      <h2>Built for the people who carry the numbers before there's a finance team to carry them</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal"><span class="num">For founders</span><h3>The pre-CFO startup</h3><p>You're scaling, the board wants real numbers, and a full-time CFO is still months away. Produce the forecast, the runway story, and the board pack yourself — without the hire.</p></div>
+      <div class="card reveal"><span class="num">For finance leads</span><h3>Fractional CFOs &amp; FP&amp;A</h3><p>You serve several startups and your prep time is the bottleneck. Standardise five playbooks once and reuse them across every client, in their numbers.</p></div>
+      <div class="card reveal"><span class="num">For practitioners</span><h3>CAs &amp; advisory firms</h3><p>Compress the mechanical analysis so senior time goes to judgment and sign-off. The "needs human review" line is wired into every output by design.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section id="team" class="dark">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">04 — The five agents</span>
+      <h2>One firm. Five specialists. Each its own Skill.</h2>
+      <p>The orchestrator classifies every request and invokes the right specialist — or composes several for cross-functional work like "are we ready to raise?"</p>
+    </div>
+    <div class="team-grid">
+      <div class="spec reveal">
+        <div class="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 20h16M6 20V9l6-4 6 4v11M10 20v-5h4v5" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <span class="role">Tax Strategist</span><h3>Plans the tax, not just files it</h3>
+        <p>Regime choice (115BAA/BAB), advance-tax scheduling, 80-IAC holiday, angel-tax status, ESOP timing, loss carry-forward — each with the section to confirm.</p>
+        <span class="skillname">skill: tax-strategist</span>
+      </div>
+      <div class="spec reveal">
+        <div class="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 18l5-6 4 3 7-9M4 4v16h16" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <span class="role">Cash Flow Forecaster</span><h3>Tells you how long the runway is</h3>
+        <p>A 13-week direct cash forecast, net burn, the burn multiple, and the exact week cash turns negative — across base, downside and upside.</p>
+        <span class="skillname">skill: cash-flow-forecaster</span>
+      </div>
+      <div class="spec reveal">
+        <div class="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h4l3 7 4-14 3 7h4" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <span class="role">Margin Analyst</span><h3>Finds the pricing leverage</h3>
+        <p>Layered contribution margin (CM1/2/3), break-even volume, and the margin impact of a price move under a stated demand elasticity.</p>
+        <span class="skillname">skill: margin-analyst</span>
+      </div>
+      <div class="spec reveal">
+        <div class="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <span class="role">Profit Leak Detector</span><h3>Spots the cash you already have</h3>
+        <p>Expense variance, SaaS sprawl, vendor duplication, GST ITC mismatches, and revenue leakage — ranked by annualised rupee impact and owner.</p>
+        <span class="skillname">skill: profit-leak-detector</span>
+      </div>
+      <div class="spec reveal">
+        <div class="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 19V7l7-4 7 4v12M9 19v-6h6v6" stroke="currentColor" stroke-width="1.5"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <span class="role">Exit Planner</span><h3>Models value — and who gets what</h3>
+        <p>A valuation range by method, the liquidation waterfall by instrument, dilution math, and a due-diligence readiness gap list.</p>
+        <span class="skillname">skill: exit-planner</span>
+      </div>
+      <div class="spec reveal" style="background:linear-gradient(160deg,#163450,#0F2540)">
+        <div class="glyph" style="border-color:var(--gold-bright)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3" stroke="currentColor" stroke-width="1.4"/></svg></div>
+        <span class="role" style="color:var(--gold-bright)">The Orchestrator</span><h3>Routes, composes, and draws the line</h3>
+        <p>Lives in the Project's instructions. Classifies the request, runs the right skills, synthesises one answer, and flags what a human must sign off.</p>
+        <span class="skillname">layer: project custom instructions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BUILD GUIDE ===================== -->
+<section id="build">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">05 — The build guide</span>
+      <h2>From first click to a governed, board-ready workflow</h2>
+      <p>Six steps. The first you can do today; the last makes it safe to publish across a team. Code is real and adaptable.</p>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step reveal">
+      <div class="step-no">01</div>
+      <div>
+        <span class="step-eyebrow">Set up the workspace</span>
+        <h3>Turn on the engine, then create the Project</h3>
+        <p>Skills run on Claude's code-execution sandbox, so that switch comes first. Then the Project becomes your "firm" — its instructions are the orchestrator, its knowledge base is the shared books.</p>
+        <ul>
+          <li>Enable <b>Code execution / file creation</b> in Settings, and confirm <b>Skills</b> is on under Customize → Skills.</li>
+          <li>Create a Project named specifically — <b>CFO Team — [YourCo]</b>, not "Finance".</li>
+          <li>Decide data hygiene first: prefer trial balances and templates over raw transaction dumps; keep the DPDP Act in mind. <b>If you wouldn't email it to a new contractor on day one, don't upload it.</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step reveal">
+      <div class="step-no">02</div>
+      <div>
+        <span class="step-eyebrow">Install the orchestrator</span>
+        <h3>The Managing Partner lives in the Project instructions</h3>
+        <p>This persistent instruction does four jobs: set the firm's standards, route requests to the right specialist, enforce output discipline, and draw the human sign-off line. It fits comfortably under the ~8,000-character limit.</p>
+        <div class="code">
+          <div class="code-bar"><span class="fn">project → instructions</span><span class="tag">orchestrator</span><button class="copy" data-code="c-orch">Copy</button></div>
+          <pre><code id="c-orch"></code></pre>
+        </div>
+        <p>Pair it with a tight knowledge base: chart of accounts, a trial-balance template, a tax profile (entity type, regime, DPIIT/80-IAC status, GSTINs), the cap table, and a metric glossary. Curation beats volume — twenty precise pages beat two hundred noisy ones.</p>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step reveal">
+      <div class="step-no">03</div>
+      <div>
+        <span class="step-eyebrow">Build the five specialists</span>
+        <h3>Each agent is a Skill — a folder you ZIP and upload</h3>
+        <p>Five rules make a skill reliable: the <b>description is the trigger</b> (write what it does <em>and</em> when to use it), keep the body lean (~3,000 tokens), push deterministic math into <b>scripts</b>, give it one job, and let composition handle cross-functional work.</p>
+        <div class="code">
+          <div class="code-bar"><span class="fn">cash-flow-forecaster/SKILL.md</span><span class="tag">skill</span><button class="copy" data-code="c-skill">Copy</button></div>
+          <pre><code id="c-skill"></code></pre>
+        </div>
+        <p>And the math it runs — a real script, executed in the sandbox, so a balance is never "estimated" by a language model:</p>
+        <div class="code">
+          <div class="code-bar"><span class="fn">cash-flow-forecaster/scripts/runway.py</span><span class="tag">python</span><button class="copy" data-code="c-py">Copy</button></div>
+          <pre><code id="c-py"></code></pre>
+        </div>
+        <p>Repeat for the Tax Strategist, Margin Analyst, Profit Leak Detector and Exit Planner. ZIP the <em>folder</em> (so the archive holds <code>cash-flow-forecaster/SKILL.md</code>, not a loose file) and upload via <b>Customize → Skills → "+" → "+ Create skill."</b></p>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step reveal">
+      <div class="step-no">04</div>
+      <div>
+        <span class="step-eyebrow">Orchestrate the team</span>
+        <h3>The workflows that pay the rent</h3>
+        <p>Describe the task and let the descriptions route it; name a skill explicitly when you want a specific lens.</p>
+        <table class="tbl">
+          <thead><tr><th>You ask</th><th>The team runs</th></tr></thead>
+          <tbody>
+            <tr><td>"Should we elect 115BAA this year?"</td><td class="em">Tax Strategist</td></tr>
+            <tr><td>"How long until we run out of cash?"</td><td class="em">Cash Flow Forecaster</td></tr>
+            <tr><td>"Where are we leaking money this quarter?"</td><td class="em">Profit Leak Detector</td></tr>
+            <tr><td>"Are we ready to raise a seed round?"</td><td class="em">Cash Flow + Margin + Exit, composed</td></tr>
+            <tr><td>"Run the month-end review."</td><td class="em">Leak + Margin + Cash Flow, composed</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step reveal">
+      <div class="step-no">05</div>
+      <div>
+        <span class="step-eyebrow">Test until it fires</span>
+        <h3>The one failure mode worth pre-empting</h3>
+        <p>The commonest problem is a skill that doesn't trigger — and the fix is almost always the <b>description</b>. Run an acceptance matrix where every prompt should invoke the right skill <em>without you naming it</em>. If one misses, add the words a user would actually type to that skill's description and re-test.</p>
+        <ul>
+          <li><b>Force the math through scripts</b> — the orchestrator forbids free-hand arithmetic. A language model should not be your calculator.</li>
+          <li><b>Guard tax claims</b> — require a cited section and a "position to confirm" flag on anything contestable.</li>
+          <li><b>Always surface assumptions</b> — a finance answer with hidden assumptions is worse than none.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step reveal">
+      <div class="step-no">06</div>
+      <div>
+        <span class="step-eyebrow">Govern, then publish</span>
+        <h3>What makes it safe to share across a team</h3>
+        <p>Version each skill like a controlled document with a changelog, and review them every Finance Act / GST cycle — the tax anchors drift. On Team and Enterprise plans, an owner can provision all five skills organization-wide, so everyone runs the <em>approved</em> version. Keep source files in the knowledge base so every conclusion is traceable to its inputs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ECONOMICS ===================== -->
+<section id="economics" class="dark">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">06 — The economics</span>
+      <h2>The case you make to your board</h2>
+      <p>The point is not "fire your finance team." It is that senior time shifts from preparation to the high-value 20% — judgment, sign-off, negotiation.</p>
+    </div>
+    <table class="tbl reveal">
+      <thead><tr><th>Function</th><th>Traditional cost (India, scaling startup)</th><th>With the Claude CFO Team</th></tr></thead>
+      <tbody>
+        <tr><td>Fractional CFO</td><td>₹1.5L–4L / month</td><td class="em">Augmented — you buy judgment, not prep</td></tr>
+        <tr><td>Junior FP&amp;A analyst</td><td>₹6L–12L / year</td><td class="em">Largely absorbed for analysis &amp; drafting</td></tr>
+        <tr><td>Recurring prep (forecasts, leak hunts, board packs)</td><td>Days every month</td><td class="em">Minutes to set up, refreshed on demand</td></tr>
+        <tr><td>Tooling</td><td>—</td><td class="em">One Claude seat (~$20–30 / user / mo)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== GOVERNANCE ===================== -->
+<section id="governance">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">07 — Governance &amp; the human line</span>
+      <h2>Automate the preparation. Keep the accountability human.</h2>
+    </div>
+    <div class="split">
+      <div class="reveal">
+        <h3 style="font-size:20px;margin-bottom:16px">Claude assists</h3>
+        <ul class="pill-list">
+          <li><span class="ic">✓</span><span><b>Forecast refreshes &amp; variance hunts</b> on demand</span></li>
+          <li><span class="ic">✓</span><span><b>Scenario modelling &amp; board-pack drafting</b></span></li>
+          <li><span class="ic">✓</span><span><b>Leakage registers &amp; unit-economics</b> decomposition</span></li>
+          <li><span class="ic">✓</span><span><b>First-draft memos</b> in your house voice</span></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:20px;margin-bottom:16px">A human must own</h3>
+        <ul class="pill-list">
+          <li><span class="ic">!</span><span><b>Signing</b> the tax return or financials</span></li>
+          <li><span class="ic">!</span><span><b>Final tax positions &amp; valuations</b> relied on by third parties</span></li>
+          <li><span class="ic">!</span><span><b>Audit opinions &amp; statutory certifications</b></span></li>
+          <li><span class="ic">!</span><span><b>Anything carrying personal professional liability</b></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout reveal" style="margin-top:36px"><b>The whole game.</b> Machine prepares, professional decides. Built right, this is not a chatbot that talks about finance — it is a disciplined analyst that shows its assumptions, runs the numbers in code, and hands a sharp draft to the human who carries the accountability.</div>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section id="start" class="band">
+  <div class="wrap">
+    <h2 class="reveal">Which of the five would move your numbers most this quarter?</h2>
+    <p class="reveal">The runway forecaster that buys fundraising calm — or the leak detector that finds the cash you already have? Build both this afternoon.</p>
+    <div class="reveal"><a class="btn btn-primary" href="#build">Start with the build guide →</a></div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">
+          <svg class="mark" width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="15" stroke="#C9A14A" stroke-width="1.3"/>
+            <path d="M16 4v24M4 16h24M8.2 8.2l15.6 15.6M23.8 8.2L8.2 23.8" stroke="#E6C56E" stroke-width="1.1" opacity=".75"/>
+            <circle cx="16" cy="16" r="3.4" fill="#E6C56E"/>
+          </svg>
+          NexAssure <b>AI</b>
+        </div>
+        <div class="foot-pub">Published &amp; developed by NexAssure AI</div>
+        <p class="foot-note">AI-driven regulatory compliance &amp; finance intelligence. This guide is educational; it does not constitute tax, legal or financial advice, and is not a substitute for a qualified professional's sign-off.</p>
+      </div>
+      <nav class="nav-links" style="display:flex;position:static;flex-direction:column;gap:6px;background:none;border:none;padding:0;align-items:flex-end">
+        <a href="#intro" style="background:none">The thesis</a>
+        <a href="#team" style="background:none">The five agents</a>
+        <a href="#build" style="background:none">The build guide</a>
+        <a href="#governance" style="background:none">Governance</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NexAssure AI Pvt Ltd · DPIIT-recognised</span>
+      <span>Built on Claude Projects + Skills · The Agent Skills open standard</span>
+    </div>
+  </div>
+</footer>
+
+<!-- raw code (kept out of HTML parsing; injected as text to avoid escaping) -->
+<script type="text/plain" id="src-orch">… abbreviated for the page; full version in the build kit …
+
+# ROLE
+You are the Managing Partner of a virtual CFO team for [YourCo], an India-based
+startup. You coordinate five specialists, each available as a Skill: Tax
+Strategist, Cash Flow Forecaster, Margin Analyst, Profit Leak Detector, Exit
+Planner. Think India-first (Income-tax Act, GST, Companies Act); flag anything
+jurisdiction-specific.
+
+# HOW YOU WORK
+1. CLASSIFY every request into one or more disciplines and INVOKE the matching
+   skill(s). For cross-functional asks (fundraise readiness, board pack),
+   COMPOSE several skills and synthesise ONE answer.
+2. If ambiguous, ask ONE sharp clarifying question, then proceed.
+
+# MATH & DATA DISCIPLINE
+- Never do financial arithmetic free-hand. When a skill ships a script, RUN IT.
+- State every assumption in an "Assumptions" block. Show units and ₹.
+- If inputs are missing, list exactly what you need — never guess.
+
+# OUTPUT STANDARD
+- Lead with the answer, then the analysis. Clean headings and tables.
+- Every deliverable ends with two lines:
+  "Confidence:" (High/Medium/Low + why)
+  "Needs human sign-off:" (what a qualified CA/CFO must verify before action)
+
+# GUARDRAILS (non-negotiable)
+- You assist; you do not replace a CA's signature or professional judgment.
+- Tax positions: cite the section; mark contestable items "position to confirm".
+- Never assert a number you did not compute or were not given.
+- Flag any DPDP Act data-privacy concern before processing personal data.
+</script>
+
+<script type="text/plain" id="src-skill">---
+name: cash-flow-forecaster
+description: >
+  Builds short-horizon cash forecasts and stress-tests runway for startups.
+  Use whenever the user asks about cash runway, monthly burn, net burn, the
+  burn multiple, a 13-week direct cash-flow, "how long until we run out of
+  money", "model a hiring/fundraise scenario", or downside stress tests. Reads
+  weekly/monthly inflows, outflows and an opening balance; computes the running
+  balance, the period cash turns negative, runway, and burn multiple. Produces
+  a forecast table plus a base/downside/upside comparison.
+---
+
+# Cash Flow Forecaster
+
+You build direct (receipts-and-payments) cash forecasts. You always RUN the
+script; you never project a balance by hand.
+
+## Workflow
+1. Get opening cash, weekly (or monthly) inflows and outflows. If only a trial
+   balance exists, derive a starting burn and ask for known one-offs (tax
+   payments, annual SaaS renewals, founder draws).
+2. RUN scripts/runway.py. Report: the period cash goes negative, runway, and
+   burn multiple if net-new-ARR is provided.
+3. Always produce THREE scenarios: Base, Downside (revenue -25%, collections
+   slip 2 weeks), Upside. State each scenario's assumptions explicitly.
+4. Translate into a decision: "Runway = X weeks. To reach 6 months, cut ₹Y/week
+   or add ₹Z of collections."
+
+## Definitions (use these, not vibes)
+- Net burn = cash out − cash in (per period)
+- Runway = opening cash ÷ average net burn (while burn > 0)
+- Burn multiple = net burn ÷ net new ARR (lower is better; <1 elite, >2 needs a reason)
+
+## Output template
+Headline (runway + binding constraint) → forecast table → 3 scenarios →
+the decision → Confidence → Needs human sign-off.
+</script>
+
+<script type="text/plain" id="src-py">#!/usr/bin/env python3
+"""13-week (or N-period) direct cash forecast + runway + burn multiple."""
+import json, sys
+
+def main():
+    d = json.loads(sys.argv[1]) if len(sys.argv) > 1 else {}
+    opening  = float(d.get("opening", 0))
+    inflows  = [float(x) for x in d.get("inflows", [])]
+    outflows = [float(x) for x in d.get("outflows", [])]
+    n = max(len(inflows), len(outflows))
+    inflows  += [0] * (n - len(inflows))
+    outflows += [0] * (n - len(outflows))
+
+    bal, negative_at, nets = opening, None, []
+    print(f"{'Per':>4}{'In':>14}{'Out':>14}{'Net':>14}{'Balance':>16}")
+    for i in range(n):
+        net = inflows[i] - outflows[i]
+        nets.append(net); bal += net
+        flag = "  <-- NEGATIVE" if bal < 0 and negative_at is None else ""
+        if bal < 0 and negative_at is None: negative_at = i + 1
+        print(f"{i+1:>4}{inflows[i]:>14,.0f}{outflows[i]:>14,.0f}{net:>14,.0f}{bal:>16,.0f}{flag}")
+
+    avg_burn = -sum(nets) / n if n else 0
+    print("\n--- Summary ---")
+    print(f"Opening cash: ₹{opening:,.0f}   Closing cash: ₹{bal:,.0f}")
+    print(f"Avg net burn/period: ₹{avg_burn:,.0f}")
+    if avg_burn > 0:
+        print(f"Runway: {opening/avg_burn:,.1f} periods")
+        print(f"Goes negative at: {'period '+str(negative_at) if negative_at else 'not within horizon'}")
+    arr = float(d.get("net_new_arr", 0))
+    if arr > 0 and avg_burn > 0:
+        print(f"Burn multiple: {avg_burn/arr:,.2f}")
+
+if __name__ == "__main__":
+    main()
+</script>
+
+<script>
+  // inject raw code as text (no manual HTML escaping needed)
+  ['orch','skill','py'].forEach(k=>{
+    var src=document.getElementById('src-'+k), dst=document.getElementById('c-'+k);
+    if(src&&dst) dst.textContent=src.textContent.trim();
+  });
+
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      var t=document.getElementById(b.dataset.code).textContent;
+      navigator.clipboard.writeText(t).then(()=>{
+        var o=b.textContent; b.textContent='Copied'; setTimeout(()=>b.textContent=o,1400);
+      }).catch(()=>{});
+    });
+  });
+
+  // mobile menu
+  var mb=document.getElementById('menuBtn'), nl=document.getElementById('navLinks');
+  if(mb) mb.addEventListener('click',()=>nl.classList.toggle('open'));
+  nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
+
+  // scroll reveal
+  var io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // active nav link on scroll
+  var secs=[...document.querySelectorAll('section[id]')];
+  var links=new Map([...document.querySelectorAll('.nav-links a[href^="#"]')].map(a=>[a.getAttribute('href').slice(1),a]));
+  var spy=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        var l=links.get(e.target.id); if(l) l.classList.add('active');
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(s=>spy.observe(s));
+</script>
