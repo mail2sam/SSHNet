@@ -42,11 +42,12 @@ def scan_posts():
         slug = post_file.parent.name
         html = post_file.read_text(encoding="utf-8", errors="ignore")
         title = extract(r"<title[^>]*>(.*?)</title>", html, slug.replace("-", " ").title())
-        desc = extract(
-            r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', html
-        ) or extract(
-            r'<meta\s+content=["\'](.*?)["\']\s+name=["\']description["\']', html
-        )
+        # match content="..." and content='...' separately so apostrophes
+        # inside a double-quoted description don't truncate it
+        desc = (extract(r'<meta\s+name=["\']description["\']\s+content="([^"]*)"', html)
+                or extract(r"<meta\s+name=['\"]description['\"]\s+content='([^']*)'", html)
+                or extract(r'<meta\s+content="([^"]*)"\s+name=["\']description["\']', html)
+                or extract(r"<meta\s+content='([^']*)'\s+name=['\"]description['\"]", html))
         if slug not in manifest:
             manifest[slug] = {"date": date.today().isoformat()}
         posts.append({
