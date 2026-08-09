@@ -14,6 +14,10 @@
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 
+    /* team profiles slide in from alternating sides */
+    document.querySelectorAll(".profile").forEach((p, i) =>
+      p.classList.add(i % 2 ? "reveal-right" : "reveal-left"));
+
     document.querySelectorAll(
       ".svc, .member, .profile, .stat, .post-card, .acc, .c-card, " +
       ".sec-kicker, .sec-title, .sec-sub, .about-body p, .quote-band p, .exp .lbl"
@@ -67,12 +71,36 @@
   top.onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   document.body.appendChild(top);
 
+  /* gold reading-progress bar along the top edge */
+  const bar = document.createElement("div");
+  bar.className = "progress";
+  document.body.appendChild(bar);
+
   function onScroll() {
     if (nav) nav.classList.toggle("scrolled", window.scrollY > 10);
     top.classList.toggle("show", window.scrollY > 600);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = max > 0 ? (window.scrollY / max) * 100 + "%" : "0";
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* soft fade between pages (internal links only) */
+  document.body.classList.add("page-enter");
+  window.addEventListener("pageshow", () => document.body.classList.remove("page-exit"));
+  if (!reduceMotion) {
+    document.addEventListener("click", e => {
+      const a = e.target.closest("a[href]");
+      if (!a || a.target === "_blank" || e.button !== 0 ||
+          e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const href = a.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") ||
+          href.startsWith("tel:") || href.startsWith("http")) return;
+      e.preventDefault();
+      document.body.classList.add("page-exit");
+      setTimeout(() => { window.location.href = href; }, 180);
+    });
+  }
 
   /* ---------- floating WhatsApp button ---------- */
   if (typeof SITE !== "undefined" && SITE.whatsapp) {
