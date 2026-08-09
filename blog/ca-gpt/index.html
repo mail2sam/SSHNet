@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CA Prompt Engineering &middot; Type the thought, get the draft</title>
+<meta name="description" content="A Custom GPT for Indian Chartered Accountants. Type a task in plain English or paste a notice, and get a structured, copy-ready draft grounded in the bare Acts. No prompt engineering required." />
+<meta name="theme-color" content="#0A1A2F" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy-950:#06121F; --navy-900:#0A1A2F; --navy-850:#0E2138; --navy-800:#122a47; --navy-700:#173458;
+    --ink:#ECF1F8; --slate:#9DB0CB; --slate-dim:#6E83A2;
+    --paper:#F8F5EC; --paper-2:#FBF9F2; --paper-ink:#16263F; --paper-muted:#54627A; --paper-line:rgba(22,38,63,.12);
+    --gold:#C8A24A; --gold-bright:#E7C871; --gold-deep:#9C7A2E; --rust:#B4622E;
+    --line:rgba(200,162,74,.22); --line-soft:rgba(157,176,203,.16);
+    --shadow:0 30px 70px rgba(3,9,18,.55); --shadow-paper:0 22px 50px rgba(4,12,24,.40);
+    --max:1140px; --r:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);
+    background:
+      radial-gradient(900px 520px at 84% -6%, rgba(200,162,74,.14), transparent 60%),
+      radial-gradient(820px 560px at 6% 4%, rgba(23,52,88,.55), transparent 62%),
+      linear-gradient(180deg,#06101C 0%, var(--navy-900) 38%, var(--navy-950) 100%);
+    background-attachment:fixed;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(rgba(200,162,74,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(200,162,74,.05) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(circle at 50% 20%,#000,transparent 78%);opacity:.5;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{width:min(100%,var(--max));margin:0 auto;padding:0 26px;position:relative;z-index:1;}
+  section{position:relative;z-index:1;}
+  section[id]{scroll-margin-top:80px;}
+
+  /* ---------- top ---------- */
+  .top{position:sticky;top:0;z-index:60;background:rgba(8,18,31,.72);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+  .top-in{width:min(100%,var(--max));margin:0 auto;padding:13px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px;}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+  .seal{width:40px;height:40px;flex:none;}
+  .brand b{font-family:Fraunces,serif;font-weight:600;font-size:1rem;display:block;line-height:1;}
+  .brand span{display:block;margin-top:3px;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+  .top-nav{display:flex;align-items:center;gap:2px;}
+  .top-nav a{font-size:.82rem;color:var(--slate);padding:9px 12px;border-radius:999px;transition:.2s;}
+  .top-nav a:hover{color:var(--ink);background:rgba(200,162,74,.10);}
+  .cta{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:.86rem;color:var(--navy-950);cursor:pointer;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold) 60%,var(--gold-deep));
+    border:1px solid rgba(231,200,113,.6);border-radius:999px;padding:11px 18px;white-space:nowrap;
+    box-shadow:0 12px 30px rgba(200,162,74,.28);transition:.2s;}
+  .cta:hover{transform:translateY(-1px);box-shadow:0 16px 38px rgba(200,162,74,.38);}
+  .cta svg{width:15px;height:15px;}
+  @media(max-width:900px){.top-nav{display:none;}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:66px 0 40px;text-align:center;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+  .eyebrow::before,.eyebrow::after{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+  .eyebrow::after{background:linear-gradient(90deg,var(--gold),transparent);}
+  .hero h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(2.4rem,5.6vw,4rem);line-height:1.02;letter-spacing:-.02em;margin:0 auto 22px;max-width:16ch;}
+  .hero h1 em{font-style:italic;color:var(--gold-bright);}
+  .hero .lede{font-size:clamp(1.05rem,1.7vw,1.24rem);color:var(--slate);max-width:56ch;margin:0 auto 30px;}
+  .hero .lede b{color:var(--ink);font-weight:600;}
+
+  /* ---------- demo console (signature) ---------- */
+  .demo{width:min(100%,900px);margin:0 auto;background:linear-gradient(160deg,var(--navy-800),var(--navy-850));
+    border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;text-align:left;}
+  .demo-head{display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid var(--line-soft);}
+  .dots{display:flex;gap:6px;}.dots i{width:11px;height:11px;border-radius:50%;display:block;}
+  .dots i:nth-child(1){background:#e06c5e;}.dots i:nth-child(2){background:#e6b34d;}.dots i:nth-child(3){background:#5db07a;}
+  .demo-head .title{margin-left:6px;font-size:.8rem;color:var(--slate);}
+  .demo-head .title b{color:var(--ink);font-weight:600;}
+  .demo-head .badge{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;color:var(--gold-bright);
+    border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:rgba(200,162,74,.06);}
+  .demo-body{padding:20px 20px 22px;}
+  .demo-hint{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px;}
+  .chip{font-size:.82rem;color:var(--ink);border:1px solid var(--line);background:rgba(200,162,74,.06);border-radius:999px;padding:8px 14px;cursor:pointer;transition:.18s;}
+  .chip:hover{background:rgba(200,162,74,.16);transform:translateY(-1px);}
+  .chip.active{background:rgba(200,162,74,.22);border-color:var(--gold);color:var(--gold-bright);}
+  .inputrow{display:flex;gap:10px;align-items:stretch;background:rgba(6,18,31,.6);border:1px solid var(--line);border-radius:14px;padding:8px 8px 8px 16px;}
+  .inputrow .promptmark{color:var(--gold-bright);font-family:"IBM Plex Mono",monospace;align-self:center;font-size:1rem;}
+  .inputrow input{flex:1;background:transparent;border:0;outline:0;color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.92rem;min-width:0;}
+  .inputrow input::placeholder{color:var(--slate-dim);}
+  .run{flex:none;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.86rem;color:var(--navy-950);cursor:pointer;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold) 60%,var(--gold-deep));border:0;border-radius:10px;padding:10px 16px;transition:.18s;}
+  .run:hover{filter:brightness(1.05);}
+  .run svg{width:15px;height:15px;}
+
+  /* thinking + output */
+  .stage{margin-top:16px;min-height:20px;}
+  .thinking{display:none;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--slate);}
+  .thinking.show{display:block;}
+  .thinking .step{opacity:0;transition:.3s;display:flex;align-items:center;gap:9px;padding:3px 0;}
+  .thinking .step.on{opacity:1;}
+  .thinking .step .tick{color:var(--gold-bright);}
+  .out{display:none;background:linear-gradient(180deg,var(--paper-2),var(--paper));color:var(--paper-ink);border-radius:14px;
+    box-shadow:var(--shadow-paper);overflow:hidden;}
+  .out.show{display:block;}
+  .out-h{display:flex;align-items:center;gap:9px;padding:13px 18px;border-bottom:1px solid var(--paper-line);
+    font-weight:600;font-size:.78rem;letter-spacing:.04em;color:var(--gold-deep);text-transform:uppercase;}
+  .out-h svg{width:20px;height:20px;}
+  .zone{padding:14px 18px;border-bottom:1px solid var(--paper-line);opacity:0;transform:translateY(8px);transition:.4s;}
+  .zone.on{opacity:1;transform:none;}
+  .zone:last-child{border-bottom:0;}
+  .zone .zt{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.64rem;font-weight:600;letter-spacing:.06em;
+    color:var(--gold-deep);background:rgba(200,162,74,.14);border:1px solid rgba(200,162,74,.3);border-radius:6px;padding:3px 8px;margin-bottom:8px;}
+  .zone p{margin:0;font-size:.92rem;color:var(--paper-ink);line-height:1.5;}
+  .zone.verify p{color:var(--paper-muted);}
+  .demo-note{margin-top:12px;font-size:.76rem;color:var(--slate-dim);}
+
+  .herometa{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;}
+  .pill{font-size:.8rem;color:var(--ink);border:1px solid var(--line);background:rgba(200,162,74,.06);border-radius:999px;padding:8px 14px;display:inline-flex;align-items:center;gap:8px;}
+  .pill svg{width:15px;height:15px;color:var(--gold-bright);}
+
+  /* ---------- section shell ---------- */
+  .sec{padding:64px 0;border-top:1px solid var(--line-soft);}
+  .sec-head{text-align:center;max-width:60ch;margin:0 auto 40px;}
+  .kick{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px;}
+  .sec-head h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(1.8rem,3.6vw,2.6rem);letter-spacing:-.015em;margin:0 0 14px;}
+  .sec-head h2 em{font-style:italic;color:var(--gold-bright);}
+  .sec-head p{color:var(--slate);font-size:1.05rem;margin:0;}
+
+  /* capability cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:820px){.cards{grid-template-columns:1fr;}}
+  .card{border:1px solid var(--line);background:linear-gradient(165deg,rgba(18,42,71,.5),rgba(14,33,56,.5));border-radius:16px;padding:22px;transition:.2s;}
+  .card:hover{transform:translateY(-3px);border-color:var(--gold);}
+  .card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(200,162,74,.1);border:1px solid var(--line);margin-bottom:14px;}
+  .card .ic svg{width:22px;height:22px;color:var(--gold-bright);}
+  .card h3{font-family:Fraunces,serif;font-weight:600;font-size:1.22rem;margin:0 0 8px;}
+  .card p{color:var(--slate);font-size:.94rem;margin:0;}
+
+  /* domain grid */
+  .domains{margin-top:26px;}
+  .domlabel{text-align:center;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--slate-dim);margin-bottom:14px;}
+  .domgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  @media(max-width:640px){.domgrid{grid-template-columns:repeat(3,1fr);}}
+  .dom{border:1px solid var(--line);background:rgba(200,162,74,.05);border-radius:12px;padding:13px 10px;text-align:center;transition:.2s;}
+  .dom:hover{background:rgba(200,162,74,.12);transform:translateY(-2px);}
+  .dom b{display:block;font-family:"IBM Plex Mono",monospace;color:var(--gold-bright);font-size:.9rem;}
+  .dom span{font-size:.68rem;color:var(--slate);}
+
+  /* how-to steps */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:820px){.steps3{grid-template-columns:1fr;}}
+  .stp{border:1px solid var(--line);border-radius:16px;padding:22px;background:rgba(200,162,74,.04);position:relative;}
+  .stp .n{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:var(--navy-950);background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:600;margin-bottom:14px;}
+  .stp h4{font-family:Fraunces,serif;font-weight:600;font-size:1.16rem;margin:0 0 8px;}
+  .stp p{color:var(--slate);font-size:.94rem;margin:0;}
+
+  /* commands */
+  .cmds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px;}
+  @media(max-width:820px){.cmds{grid-template-columns:1fr 1fr;}}
+  @media(max-width:520px){.cmds{grid-template-columns:1fr;}}
+  .cmd{border:1px solid var(--line-soft);background:rgba(255,255,255,.02);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.2s;}
+  .cmd:hover{border-color:var(--gold);background:rgba(200,162,74,.06);}
+  .cmd code{font-family:"IBM Plex Mono",monospace;color:var(--gold-bright);font-size:.86rem;display:flex;align-items:center;justify-content:space-between;}
+  .cmd code .cp{font-size:.6rem;letter-spacing:.1em;color:var(--slate-dim);text-transform:uppercase;}
+  .cmd p{margin:8px 0 0;color:var(--slate);font-size:.86rem;}
+
+  /* prompt library tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px;}
+  .tab{font-size:.84rem;color:var(--slate);border:1px solid var(--line-soft);background:rgba(255,255,255,.02);border-radius:999px;padding:9px 16px;cursor:pointer;transition:.18s;}
+  .tab:hover{color:var(--ink);}
+  .tab.active{color:var(--navy-950);background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));border-color:transparent;font-weight:600;}
+  .libgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:720px){.libgrid{grid-template-columns:1fr;}}
+  .lib{display:flex;align-items:center;gap:13px;border:1px solid var(--line-soft);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,.02);cursor:pointer;transition:.2s;}
+  .lib:hover{border-color:var(--gold);background:rgba(200,162,74,.06);transform:translateX(3px);}
+  .lib .lc{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--gold-deep);background:rgba(200,162,74,.14);border:1px solid rgba(200,162,74,.3);border-radius:6px;padding:4px 8px;flex:none;}
+  .lib .lt{flex:1;font-size:.94rem;color:var(--ink);}
+  .lib .go{color:var(--slate-dim);font-size:.8rem;flex:none;transition:.2s;}
+  .lib:hover .go{color:var(--gold-bright);}
+  .libnote{text-align:center;margin-top:18px;font-size:.86rem;color:var(--slate);}
+  .libnote b{color:var(--gold-bright);}
+
+  /* comparison */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:720px){.vs{grid-template-columns:1fr;}}
+  .vcol{border-radius:16px;padding:22px;border:1px solid var(--line-soft);background:rgba(255,255,255,.02);}
+  .vcol.good{border-color:var(--line);background:linear-gradient(165deg,rgba(200,162,74,.08),rgba(14,33,56,.4));}
+  .vcol h4{margin:0 0 14px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;}
+  .vcol.good h4{color:var(--gold-bright);}
+  .vcol.bad h4{color:var(--slate-dim);}
+  .vcol ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+  .vcol li{font-size:.94rem;color:var(--slate);display:flex;gap:10px;align-items:flex-start;}
+  .vcol li svg{width:16px;height:16px;flex:none;margin-top:3px;}
+
+  /* control */
+  .control{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  @media(max-width:820px){.control{grid-template-columns:1fr;gap:28px;}}
+  .chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:6px 0 20px;}
+  .chain .lnk{font-family:Fraunces,serif;font-weight:600;font-size:1.35rem;color:var(--ink);}
+  .chain .lnk.gold{color:var(--gold-bright);}
+  .chain .ar{color:var(--gold);opacity:.6;}
+  .boundaries{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px;}
+  .boundaries li{font-size:.92rem;color:var(--slate);display:flex;gap:10px;align-items:flex-start;}
+  .boundaries li svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--slate-dim);}
+  .keyline{border-left:2px solid var(--gold);padding:6px 0 6px 16px;color:var(--slate);font-size:.98rem;}
+  .keyline b{color:var(--gold-bright);}
+
+  /* final cta */
+  .final{padding:78px 0 40px;text-align:center;border-top:1px solid var(--line-soft);}
+  .final .bub{display:inline-block;font-family:Fraunces,serif;font-weight:900;font-size:clamp(2rem,5vw,3rem);color:var(--navy-950);
+    background:linear-gradient(100deg,var(--gold-bright),var(--gold) 62%,var(--gold-deep));padding:6px 24px 12px;border-radius:12px;line-height:1;
+    box-shadow:0 16px 40px rgba(200,162,74,.3);transform:rotate(-1deg);}
+  .final h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(1.7rem,3.6vw,2.4rem);margin:26px auto 14px;max-width:20ch;}
+  .final p{color:var(--slate);max-width:48ch;margin:0 auto 30px;}
+  .final .cta{font-size:.98rem;padding:15px 28px;}
+  .final .alt{display:block;margin-top:16px;font-size:.86rem;color:var(--slate-dim);}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:34px 0 46px;}
+  .foot-in{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;}
+  .foot-in .fb{display:flex;align-items:center;gap:12px;}
+  .foot-in small{color:var(--slate-dim);font-size:.78rem;line-height:1.6;display:block;}
+  .foot-in a{color:var(--gold);}
+  .disclaim{margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft);color:var(--slate-dim);font-size:.76rem;max-width:96ch;}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
+    background:var(--gold);color:var(--navy-950);font-weight:600;font-size:.82rem;padding:10px 18px;border-radius:999px;
+    box-shadow:0 12px 30px rgba(200,162,74,.4);transition:.25s;z-index:80;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* reasoning graph */
+  .reason-stage{border:1px solid var(--line);border-radius:20px;background:linear-gradient(165deg,rgba(18,42,71,.5),rgba(10,26,47,.6));
+    box-shadow:var(--shadow);padding:12px;overflow:hidden;position:relative;}
+  .reason-stage::after{content:"";position:absolute;inset:0;background:radial-gradient(460px 220px at 50% 0,rgba(200,162,74,.10),transparent 70%);pointer-events:none;}
+  .reason-stage canvas{width:100%;height:360px;display:block;position:relative;}
+  @media(max-width:640px){.reason-stage canvas{height:440px;}}
+  .reason-cap{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.05em;color:var(--slate);padding:10px 8px 4px;position:relative;}
+
+  /* faq accordion */
+  .faq{max-width:820px;margin:0 auto;display:grid;gap:12px;}
+  .faq-item{border:1px solid var(--line-soft);border-radius:14px;background:rgba(255,255,255,.02);overflow:hidden;transition:.2s;}
+  .faq-item[open]{border-color:var(--line);background:rgba(200,162,74,.04);}
+  .faq-item summary{list-style:none;cursor:pointer;padding:18px 20px;font-family:Fraunces,serif;font-weight:600;font-size:1.08rem;color:var(--ink);
+    display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:var(--gold-bright);}
+  .faq-item .pm{position:relative;width:16px;height:16px;flex:none;}
+  .faq-item .pm::before,.faq-item .pm::after{content:"";position:absolute;background:var(--gold-bright);border-radius:2px;transition:.2s;}
+  .faq-item .pm::before{left:0;top:7px;width:16px;height:2px;}
+  .faq-item .pm::after{left:7px;top:0;width:2px;height:16px;}
+  .faq-item[open] .pm::after{transform:rotate(90deg);opacity:0;}
+  .faq-item p{margin:0;padding:0 20px 18px;color:var(--slate);font-size:.96rem;line-height:1.6;}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+  .rv.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}.rv{opacity:1;transform:none;transition:none;}}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP ============ -->
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg class="seal" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#C8A24A" stroke-width="1.4"/><circle cx="24" cy="24" r="17" fill="none" stroke="rgba(200,162,74,.45)" stroke-width="1"/><text x="24" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="600" fill="#E7C871">CA</text></svg>
+      <div><b>CA Prompt Engineering</b><span>Aggarwal Samir &amp; Co.</span></div>
+    </div>
+    <nav class="top-nav">
+      <a href="#what">What it does</a>
+      <a href="#how">How to use</a>
+      <a href="#library">Prompt library</a>
+      <a href="#control">Your control</a>
+    </nav>
+    <a class="cta" href="https://chatgpt.com/g/g-6a2d9243b104819187c16daf5be738c2-ca-prompt-engineering" target="_blank" rel="noopener">
+      Open the GPT
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ============ HERO + LIVE DEMO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Built for CA practice &middot; Trained on the bare Acts</span>
+    <h1>Type the thought. <em>Get the draft.</em></h1>
+    <p class="lede">A Custom GPT for Indian Chartered Accountants. Ask in plain English or paste a notice, and it returns a structured, copy-ready draft grounded in the 2025 Acts and Rules. <b>No prompt engineering. No blank box.</b></p>
+
+    <!-- LIVE DEMO -->
+    <div class="demo" id="demo">
+      <div class="demo-head">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="title"><b>CA Practice AI</b> &middot; live preview</span>
+        <span class="badge">no prompt needed</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-hint">Tap a real task, or type your own</div>
+        <div class="chips" id="chips"></div>
+        <div class="inputrow">
+          <span class="promptmark">&gt;</span>
+          <input id="deInput" type="text" placeholder="e.g. 148A notice, AY 2023-24, gift from father, draft the reply" aria-label="Type a task" />
+          <button class="run" id="deRun">Run<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+
+        <div class="stage">
+          <div class="thinking" id="thinking">
+            <div class="step"><span class="tick">&#10003;</span> Reading the task in plain English</div>
+            <div class="step"><span class="tick">&#10003;</span> Grounding in the bare Acts and Rules</div>
+            <div class="step"><span class="tick">&#10003;</span> Flagging every rate, threshold and due date</div>
+            <div class="step"><span class="tick">&#10003;</span> Structuring the copy-ready draft</div>
+          </div>
+
+          <div class="out" id="out">
+            <div class="out-h">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9C7A2E" stroke-width="1.8"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v6h6"/></svg>
+              <span>Aggarwal Samir &amp; Co. &middot; reply pack</span>
+            </div>
+            <div class="zone" data-zone="draft"><span class="zt">DRAFT</span><p id="zDraft"></p></div>
+            <div class="zone" data-zone="assumed"><span class="zt">ASSUMPTIONS</span><p id="zAssumed"></p></div>
+            <div class="zone verify" data-zone="verify"><span class="zt">VERIFY BEFORE USE</span><p id="zVerify"></p></div>
+            <div class="zone" data-zone="next"><span class="zt">WHAT NEXT</span><p id="zNext"></p></div>
+          </div>
+        </div>
+        <p class="demo-note">Illustrative preview. The live GPT reasons from the loaded Acts and states its full assumptions each time. Every output is a draft for your review.</p>
+      </div>
+    </div>
+
+    <div class="herometa">
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg>Grounded in the 2025 Acts</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Structured output, every time</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg>114 prompts run for you</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>You verify, you sign, you own</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT REASONS ============ -->
+<section class="sec" id="reason">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">How it reasons</div>
+      <h2>Traced from primary law, <em>shaped into one format.</em></h2>
+      <p>It does not answer from stale memory. It grounds each task in the Acts and Rules loaded into it, then returns the same four zones every time.</p>
+    </div>
+    <div class="reason-stage rv">
+      <canvas id="reasonCanvas" aria-label="Animated diagram: the bare Acts and Rules flow through a grounding core into a structured draft"></canvas>
+      <div class="reason-cap">Bare Acts &amp; Rules &nbsp;&rarr;&nbsp; grounding &nbsp;&rarr;&nbsp; a structured, verifiable draft</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT IT DOES ============ -->
+<section class="sec" id="what">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">What it does</div>
+      <h2>A CA colleague, <em>not a chatbot.</em></h2>
+      <p>It thinks in AY cycles, TDS quarters, GST closes and MCA filings. The difference from a general chatbot is not tone. It is the source it reasons from.</p>
+    </div>
+    <div class="cards rv">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4z"/><path d="M8 5v14M4 9h4"/></svg></div>
+        <h3>Reads your notices</h3>
+        <p>Paste a 143(1), 148A, GST SCN or MCA notice. It identifies the section, captures the deadline, understands the issue and suggests the next action.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v4H4zM4 12h16v8H4z"/><path d="M8 16h8"/></svg></div>
+        <h3>Drafts the deliverable</h3>
+        <p>Replies, client emails, checklists, file notes, board resolutions and advisory memos. Client text carries no jargon. Internal text uses CA terminology.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Grounds every answer</h3>
+        <p>It reasons from the bare Acts and Rules loaded into it, and flags every rate, threshold, due date and section reference for you to verify before use.</p>
+      </div>
+    </div>
+
+    <div class="domains rv">
+      <div class="domlabel">Nine practice domains, one assistant</div>
+      <div class="domgrid">
+        <div class="dom"><b>ITR</b><span>Income tax</span></div>
+        <div class="dom"><b>GST</b><span>Returns &amp; SCN</span></div>
+        <div class="dom"><b>TDS</b><span>Sections &amp; rates</span></div>
+        <div class="dom"><b>MCA</b><span>ROC filings</span></div>
+        <div class="dom"><b>Audit</b><span>Docs &amp; reports</span></div>
+        <div class="dom"><b>Advisory</b><span>Memos &amp; options</span></div>
+        <div class="dom"><b>Compliance</b><span>Calendars</span></div>
+        <div class="dom"><b>Finance</b><span>FP&amp;A notes</span></div>
+        <div class="dom"><b>QC</b><span>Verification</span></div>
+        <div class="dom"><b>Emails</b><span>&amp; more</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW TO USE ============ -->
+<section class="sec" id="how">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">How to use it</div>
+      <h2>Three moves. <em>That is the whole method.</em></h2>
+      <p>You never write a structured prompt. You type the way you would speak to your article assistant, and reshape the result with one word.</p>
+    </div>
+    <div class="steps3 rv">
+      <div class="stp"><div class="n">1</div><h4>Say it in plain English</h4><p>Open the GPT, then type your task or paste a notice. No role, no context block, no format instructions. Just the thought.</p></div>
+      <div class="stp"><div class="n">2</div><h4>Read the structured draft</h4><p>Back comes the deliverable, the assumptions it made, the items to verify, and the next steps. Same shape, every time.</p></div>
+      <div class="stp"><div class="n">3</div><h4>Verify, then deliver</h4><p>Check the flagged rates and dates against the Act, apply your judgement, run QC-1, and send. You sign, you own.</p></div>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:52px;margin-bottom:22px;">
+      <h2 style="font-size:clamp(1.4rem,2.6vw,1.8rem);">Reshape any output with <em>one word</em></h2>
+      <p style="font-size:.98rem;">Tap a command to see what it does. Inside the boundaries, one word rewrites the last output instantly.</p>
+    </div>
+    <div class="cmds rv">
+      <div class="cmd"><code>WhatsApp<span class="cp">tap to copy</span></code><p>Turn the last client output into a message under 200 words.</p></div>
+      <div class="cmd"><code>Hindi<span class="cp">tap to copy</span></code><p>Translate the client-facing text into Hindi.</p></div>
+      <div class="cmd"><code>Shorter<span class="cp">tap to copy</span></code><p>Compress the last output by about 40 percent, structure intact.</p></div>
+      <div class="cmd"><code>More formal<span class="cp">tap to copy</span></code><p>Raise the register of the last output.</p></div>
+      <div class="cmd"><code>Run QC-1<span class="cp">tap to copy</span></code><p>Seven verifications on the last output before you sign off.</p></div>
+      <div class="cmd"><code>Summary<span class="cp">tap to copy</span></code><p>A full session log: prompts used, outputs ready, pending items.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMPT LIBRARY ============ -->
+<section class="sec" id="library">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">114-prompt library</div>
+      <h2>The prompts are already written. <em>You run them.</em></h2>
+      <p>A working library across nine domains sits inside the assistant. Tap any prompt to run it in the demo above.</p>
+    </div>
+    <div class="rv">
+      <div class="tabs" id="tabs"></div>
+      <div class="libgrid" id="libgrid"></div>
+      <p class="libnote">This is a sample. The full library holds <b>114 practitioner prompts</b>, and you can also just ask in your own words.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">Why it is different</div>
+      <h2>Same question. <em>Very different source.</em></h2>
+    </div>
+    <div class="vs rv">
+      <div class="vcol good">
+        <h4>This assistant</h4>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#E7C871" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Reasons from the bare Acts and Rules loaded into it</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#E7C871" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Flags every rate, threshold and due date to verify</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#E7C871" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Runs 114 ready prompts for you, you write none</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#E7C871" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Returns the same structured, file-ready shape each time</li>
+        </ul>
+      </div>
+      <div class="vcol bad">
+        <h4>A general chatbot</h4>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6E83A2" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Answers from memory that goes stale after each Budget</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6E83A2" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>States sections and rates confidently, even when wrong</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6E83A2" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Hands you a blank box and asks you to engineer prompts</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#6E83A2" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Gives loose prose you still have to restructure yourself</li>
+        </ul>
+      </div>
+    </div>
+    <p class="keyline rv" style="max-width:80ch;margin:24px auto 0;text-align:left;">An honest limit: grounding in primary law sharply reduces wrong sections and rates. It does not make the tool infallible. <b>Every output stays a draft for your review.</b></p>
+  </div>
+</section>
+
+<!-- ============ CONTROL ============ -->
+<section class="sec" id="control">
+  <div class="wrap">
+    <div class="control">
+      <div class="rv">
+        <div class="kick">You stay in control</div>
+        <h2 style="font-family:Fraunces,serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.3rem);letter-spacing:-.015em;margin:0 0 14px;">It does the heavy lifting. You keep the judgement.</h2>
+        <div class="chain">
+          <span class="lnk">AI prepares.</span><span class="ar">&rarr;</span>
+          <span class="lnk">You review.</span><span class="ar">&rarr;</span>
+          <span class="lnk">You amend.</span><span class="ar">&rarr;</span>
+          <span class="lnk">You sign.</span><span class="ar">&rarr;</span>
+          <span class="lnk gold">You own.</span>
+        </div>
+        <p class="keyline">Judgement remains human. Support is AI. <b>The assistant supports the work, it does not sign it.</b></p>
+      </div>
+      <div class="rv">
+        <div class="card" style="border-color:var(--line);">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Firm boundaries by design</h3>
+          <p style="margin-bottom:6px;">The assistant will not:</p>
+          <ul class="boundaries">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>File returns or touch any portal</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Issue a UDIN or a certificate</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Give a final legal position or opinion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kick">Good to know</div>
+      <h2>Answers before <em>you open it.</em></h2>
+    </div>
+    <div class="faq rv">
+      <details class="faq-item" open><summary>Do I need to learn prompt engineering?<span class="pm"></span></summary><p>No. Type the task in plain English or paste a notice. The 114 prompts run behind the scenes, so you never write one. If you can describe it to your article assistant, you can ask the GPT.</p></details>
+      <details class="faq-item"><summary>Where do I find it?<span class="pm"></span></summary><p>It sits in your ChatGPT sidebar under GPTs, or open it directly with the shared link. Use the "Open the GPT" button anywhere on this page.</p></details>
+      <details class="faq-item"><summary>Does it file returns or issue a UDIN?<span class="pm"></span></summary><p>No. It drafts. It will not touch a portal, file a return, or issue a UDIN or certificate. Those stay with you, the practitioner. It prepares, you verify and sign.</p></details>
+      <details class="faq-item"><summary>How current is the law it uses?<span class="pm"></span></summary><p>It reasons from the Acts and Rules loaded into it and flags every rate, threshold, due date and section reference for you to confirm against the official source before use.</p></details>
+      <details class="faq-item"><summary>Can it replace my judgement?<span class="pm"></span></summary><p>No, and it is not meant to. Every output is a structured draft for your review. AI prepares, you review, amend, sign and own. Judgement stays human.</p></details>
+      <details class="faq-item"><summary>What can I actually ask it?<span class="pm"></span></summary><p>Income tax, GST, TDS, MCA and ROC filings, audit, advisory, compliance calendars, FP&amp;A notes and QC, plus client emails, checklists and file notes. Paste a notice or just describe the task.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap rv">
+    <span class="bub">Comment &ldquo;CA AI&rdquo;</span>
+    <h2>Or open it now and paste a live notice.</h2>
+    <p>Three moves are enough to feel the difference. Open the GPT, paste a real notice, and take the draft.</p>
+    <a class="cta" href="https://chatgpt.com/g/g-6a2d9243b104819187c16daf5be738c2-ca-prompt-engineering" target="_blank" rel="noopener">
+      Open CA Prompt Engineering
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <span class="alt">Find it in your ChatGPT sidebar under GPTs, or comment &ldquo;CA AI&rdquo; on the post for the guide.</span>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="fb">
+        <svg class="seal" viewBox="0 0 48 48" aria-hidden="true" style="width:46px;height:46px;"><circle cx="24" cy="24" r="22" fill="none" stroke="#C8A24A" stroke-width="1.4"/><circle cx="24" cy="24" r="17" fill="none" stroke="rgba(200,162,74,.45)" stroke-width="1"/><text x="24" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="600" fill="#E7C871">CA</text></svg>
+        <small><b style="color:var(--ink);font-weight:600;">Aggarwal Samir &amp; Co.</b>, Chartered Accountants<br>CA Practice AI Assistant &middot; Powered by the AI Prompts Handbook for CAs</small>
+      </div>
+      <small style="text-align:right;">CA Samir Aggarwal &middot; <a href="https://www.linkedin.com/in/samir-aggarwal-3713998" target="_blank" rel="noopener">LinkedIn</a><br>NexAssure AI</small>
+    </div>
+    <p class="disclaim">Use responsibly. All outputs are structured drafts, not filings. Verify all rates, thresholds, due dates and section references against official sources (Income Tax Act, GST Act, MCA portal, ICAI circulars) before professional use. The assistant supports, it does not replace, the practitioner's judgement. Nothing it produces is legal advice or a UDIN-ready certificate.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Copied</div>
+
+<script>
+/* ---------------- sample outputs ---------------- */
+var SAMPLES = {
+  s148a:{
+    label:"148A notice, gift from father",
+    input:"148A notice, AY 2023-24, client says the 12L was a gift from his father. draft the reply",
+    draft:"Reply to the notice u/s 148A(b), copy-ready, setting out why reassessment is not warranted on these facts.",
+    assumed:"AY 2023-24, resident individual. The receipt is a gift from the father, a covered relative, and falls within the relative definition u/s 56(2)(x).",
+    verify:"The exact limb and date of the 148A notice; the gift deed and bank trail; the section wording and any monetary threshold against the current Act.",
+    next:"Run QC-1, attach the gift deed and bank statement, then ask for a WhatsApp summary for the client."
+  },
+  s143:{
+    label:"143(1) TDS mismatch",
+    input:"143(1) mismatch for AY 2024-25, 26AS shows extra TDS not claimed in the return. what do i reply",
+    draft:"Response to the intimation u/s 143(1), copy-ready, seeking credit for the unclaimed TDS.",
+    assumed:"AY 2024-25. The TDS credit is genuine, and the mismatch is an under-claim, not an income variance.",
+    verify:"26AS against AIS; the deductor's PAN and TAN; the TDS schedule in the filed return.",
+    next:"Run QC-1, file the online response or rectification u/s 154, then message the client."
+  },
+  sgst:{
+    label:"GST SCN, ITC mismatch",
+    input:"GST SCN, ITC mismatch between GSTR-3B and 2B for FY 2023-24. draft a reply",
+    draft:"Reply to the show cause notice, copy-ready, reconciling the input tax credit difference.",
+    assumed:"FY 2023-24. The difference is timing and supplier filing, not ineligible credit, and Section 16 conditions are met.",
+    verify:"The 3B vs 2B reconciliation; supplier GSTINs and their filing status; the SCN reference number and reply due date.",
+    next:"Run QC-1, prepare the reconciliation annexure, and note the reply deadline in the tracker."
+  },
+  sletter:{
+    label:"Engagement letter + checklist",
+    input:"new audit client, private company. draft an engagement letter and a document checklist",
+    draft:"An engagement letter plus a numbered, file-ready document request checklist.",
+    assumed:"Statutory audit under the Companies Act 2013, standard ICAI engagement terms, no prior-auditor issues flagged.",
+    verify:"The applicable audit thresholds and CARO applicability; the prior auditor and NOC; the fee and scope clauses.",
+    next:"Run QC-1, send for partner sign-off, then issue on the firm template."
+  }
+};
+function genericOut(t){
+  return {
+    draft:'A copy-ready draft for: "'+t+'".',
+    assumed:"Common Indian-practice defaults for the current AY or FY. The live GPT states each assumption it uses in full.",
+    verify:"All rates, thresholds, due dates and section references against the bare Act before use.",
+    next:"Run QC-1, then review, amend and sign."
+  };
+}
+
+/* ---------------- library data ---------------- */
+var LIB = {
+  "Income tax":[["ITR","Reply to a 143(1) intimation","s143"],["ITR","Draft a 148A notice response","s148a"],["ITR","Map an old section to the 2025 Act",null],["ITR","Compute advance tax for a client",null]],
+  "GST":[["GST","Reply to a GST show cause notice","sgst"],["GST","Reconcile GSTR-3B vs 2B credit","sgst"],["GST","Draft an RCM applicability note",null],["GST","Explain a new GST rule in plain terms",null]],
+  "TDS":[["TDS","Find the right TDS section and rate",null],["TDS","Draft a lower-deduction request",null],["TDS","Quarterly TDS return checklist",null],["TDS","Interest and late-fee working",null]],
+  "MCA / ROC":[["MCA","Board resolution for a bank account",null],["MCA","Annual filing checklist, AOC-4 and MGT-7",null],["MCA","Director KYC reminder note",null],["MCA","Registered office change steps",null]],
+  "Audit":[["AUD","Draft an engagement letter","sletter"],["AUD","Audit documentation checklist","sletter"],["AUD","CARO 2020 applicability note",null],["AUD","Management representation letter",null]],
+  "Advisory":[["ADV","Compare the 1961 Act vs 2025 Act",null],["ADV","Structure options for a new business",null],["ADV","Client memo on a Budget change",null],["ADV","Capital gains planning note",null]],
+  "Compliance":[["CMP","Due-date calendar for the month",null],["CMP","FEMA compliance checklist",null],["CMP","Company-law compliance tracker",null],["CMP","Event-based ROC trigger list",null]],
+  "Finance":[["FIN","Variance analysis commentary",null],["FIN","Cash-flow summary note",null],["FIN","Ratio analysis for a lender",null],["FIN","Board-pack financial summary",null]],
+  "QC":[["QC","Run QC-1 seven verifications",null],["QC","Fact-check the last output",null],["QC","List everything to verify before filing",null],["QC","Cross-check a rate against the Act",null]]
+};
+
+/* ---------------- demo engine ---------------- */
+var chipsEl=document.getElementById('chips'),
+    input=document.getElementById('deInput'),
+    thinking=document.getElementById('thinking'),
+    out=document.getElementById('out'),
+    running=false;
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+Object.keys(SAMPLES).forEach(function(k,i){
+  var s=SAMPLES[k], c=document.createElement('button');
+  c.className='chip'+(i===0?' active':''); c.textContent=s.label; c.dataset.key=k;
+  c.addEventListener('click',function(){ setActiveChip(c); runKey(k); });
+  chipsEl.appendChild(c);
+});
+function setActiveChip(el){ document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');}); if(el)el.classList.add('active'); }
+
+function typeInto(text,cb){
+  if(reduce){ input.value=text; cb(); return; }
+  input.value=''; var i=0;
+  (function tick(){ if(i<=text.length){ input.value=text.slice(0,i); i++; setTimeout(tick,14); } else cb(); })();
+}
+function showThinking(cb){
+  var steps=thinking.querySelectorAll('.step');
+  steps.forEach(function(s){s.classList.remove('on');});
+  thinking.classList.add('show');
+  if(reduce){ steps.forEach(function(s){s.classList.add('on');}); setTimeout(cb,150); return; }
+  var i=0;
+  (function tick(){ if(i<steps.length){ steps[i].classList.add('on'); i++; setTimeout(tick,260); } else setTimeout(cb,320); })();
+}
+function reveal(data){
+  document.getElementById('zDraft').textContent=data.draft;
+  document.getElementById('zAssumed').textContent=data.assumed;
+  document.getElementById('zVerify').textContent=data.verify;
+  document.getElementById('zNext').textContent=data.next;
+  var zones=out.querySelectorAll('.zone');
+  zones.forEach(function(z){z.classList.remove('on');});
+  out.classList.add('show');
+  if(reduce){ zones.forEach(function(z){z.classList.add('on');}); running=false; return; }
+  var i=0;
+  (function tick(){ if(i<zones.length){ zones[i].classList.add('on'); i++; setTimeout(tick,220); } else running=false; })();
+}
+function runData(text,data){
+  if(running) return; running=true;
+  out.classList.remove('show'); thinking.classList.remove('show');
+  typeInto(text,function(){ showThinking(function(){ thinking.classList.remove('show'); reveal(data); }); });
+}
+function runKey(k){ var s=SAMPLES[k]; runData(s.input,{draft:s.draft,assumed:s.assumed,verify:s.verify,next:s.next}); }
+function runCustom(){
+  var t=input.value.trim(); if(!t) return;
+  var hit=null; Object.keys(SAMPLES).forEach(function(k){ if(SAMPLES[k].input.toLowerCase()===t.toLowerCase()) hit=k; });
+  if(hit){ runKey(hit); } else { runData(t,genericOut(t)); setActiveChip(null); }
+}
+document.getElementById('deRun').addEventListener('click',runCustom);
+input.addEventListener('keydown',function(e){ if(e.key==='Enter') runCustom(); });
+
+/* first sample preloaded (static, no animation) */
+(function(){ var s=SAMPLES.s148a; input.value=s.input;
+  document.getElementById('zDraft').textContent=s.draft;
+  document.getElementById('zAssumed').textContent=s.assumed;
+  document.getElementById('zVerify').textContent=s.verify;
+  document.getElementById('zNext').textContent=s.next;
+  thinking.querySelectorAll('.step').forEach(function(x){x.classList.add('on');});
+  out.querySelectorAll('.zone').forEach(function(z){z.classList.add('on');});
+  out.classList.add('show');
+})();
+
+/* ---------------- library tabs ---------------- */
+var tabsEl=document.getElementById('tabs'), libEl=document.getElementById('libgrid');
+Object.keys(LIB).forEach(function(name,i){
+  var t=document.createElement('button'); t.className='tab'+(i===0?' active':''); t.textContent=name;
+  t.addEventListener('click',function(){ document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');}); t.classList.add('active'); renderLib(name); });
+  tabsEl.appendChild(t);
+});
+function renderLib(name){
+  libEl.innerHTML='';
+  LIB[name].forEach(function(row){
+    var el=document.createElement('div'); el.className='lib';
+    el.innerHTML='<span class="lc">'+row[0]+'</span><span class="lt">'+row[1]+'</span><span class="go">run &rarr;</span>';
+    el.addEventListener('click',function(){
+      document.getElementById('demo').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+      setTimeout(function(){
+        if(row[2] && SAMPLES[row[2]]){ setActiveChip(null); document.querySelectorAll('.chip').forEach(function(x){ if(x.dataset.key===row[2]) x.classList.add('active'); }); runKey(row[2]); }
+        else { setActiveChip(null); runData(row[1].toLowerCase(),genericOut(row[1])); }
+      }, reduce?0:420);
+    });
+    libEl.appendChild(el);
+  });
+}
+renderLib(Object.keys(LIB)[0]);
+
+/* ---------------- command copy ---------------- */
+var toast=document.getElementById('toast');
+function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(window.__t); window.__t=setTimeout(function(){toast.classList.remove('show');},1500); }
+document.querySelectorAll('.cmd').forEach(function(c){
+  c.addEventListener('click',function(){
+    var word=c.querySelector('code').childNodes[0].textContent.trim();
+    if(navigator.clipboard) navigator.clipboard.writeText(word);
+    showToast('Copied "'+word+'"');
+  });
+});
+
+/* ---------------- reasoning graph ---------------- */
+(function(){
+  var cv=document.getElementById('reasonCanvas'); if(!cv||!cv.getContext) return;
+  var ctx=cv.getContext('2d'), W,H,dpr,core,raf,pulse=0;
+  var reduceR = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sources=[{t:"Income-tax Act"},{t:"GST & Co. law"},{t:"Rules & circulars"}];
+  var outputs=[{t:"Draft"},{t:"Verify"},{t:"What next"}];
+  var edges=[], parts=[];
+  function bez(a,c1,c2,b,t){var u=1-t;return u*u*u*a+3*u*u*t*c1+3*u*t*t*c2+t*t*t*b;}
+  function layout(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    var r=cv.getBoundingClientRect(); W=r.width; H=r.height;
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    sources.forEach(function(n,i){ n.x=W*0.15; n.y=H*(0.24+0.26*i); });
+    outputs.forEach(function(n,i){ n.x=W*0.85; n.y=H*(0.24+0.26*i); });
+    core={x:W*0.5,y:H*0.5};
+    edges=[]; sources.forEach(function(s){edges.push({a:s,b:core});}); outputs.forEach(function(o){edges.push({a:core,b:o});});
+    parts=[]; edges.forEach(function(e,ei){ for(var k=0;k<3;k++) parts.push({e:ei,t:k/3+Math.random()*0.1,sp:0.0015+Math.random()*0.0013}); });
+  }
+  function dot(n,rad,fill,stroke){ ctx.beginPath();ctx.arc(n.x,n.y,rad,0,7);ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=1.4;ctx.strokeStyle=stroke;ctx.stroke(); }
+  function cap(n,txt){ ctx.fillStyle='#9DB0CB';ctx.font='500 11px "IBM Plex Mono", monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,n.x,n.y+18); }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    edges.forEach(function(e){ var mx=(e.a.x+e.b.x)/2; ctx.beginPath();ctx.moveTo(e.a.x,e.a.y);
+      ctx.bezierCurveTo(mx,e.a.y,mx,e.b.y,e.b.x,e.b.y); ctx.strokeStyle='rgba(200,162,74,.22)';ctx.lineWidth=1.2;ctx.stroke(); });
+    parts.forEach(function(p){ var e=edges[p.e],mx=(e.a.x+e.b.x)/2,t=p.t;
+      var x=bez(e.a.x,mx,mx,e.b.x,t), y=bez(e.a.y,e.a.y,e.b.y,e.b.y,t);
+      ctx.beginPath();ctx.arc(x,y,2.4,0,7);ctx.fillStyle='rgba(231,200,113,.92)';ctx.fill();
+      if(!reduceR){ p.t+=p.sp; if(p.t>1)p.t=0; } });
+    sources.forEach(function(s){ dot(s,6,'#122a47','rgba(200,162,74,.6)'); cap(s,s.t); });
+    outputs.forEach(function(o){ dot(o,6,'#122a47','rgba(200,162,74,.6)'); cap(o,o.t); });
+    var pr=25+Math.sin(pulse)*2;
+    ctx.beginPath();ctx.arc(core.x,core.y,pr+9,0,7);ctx.strokeStyle='rgba(200,162,74,'+(0.22+0.14*Math.sin(pulse))+')';ctx.lineWidth=1;ctx.stroke();
+    dot(core,pr,'rgba(200,162,74,.12)','#E7C871');
+    ctx.fillStyle='#E7C871';ctx.font='600 15px Fraunces, serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('CA',core.x,core.y);
+    if(!reduceR) pulse+=0.05;
+  }
+  function loop(){ draw(); raf=requestAnimationFrame(loop); }
+  function start(){ layout(); if(reduceR){draw();} else {cancelAnimationFrame(raf);loop();} }
+  var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(start,150); });
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(start); } else { start(); }
+  start();
+})();
+
+/* ---------------- reveal on scroll ---------------- */
+var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
