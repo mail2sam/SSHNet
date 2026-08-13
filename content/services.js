@@ -1,5 +1,5 @@
-/* ================================================================
-   SERVICES FILE — edit this file to add / change / remove services
+﻿/* ================================================================
+   SERVICES FILE â€” edit this file to add / change / remove services
    ================================================================
    The site has service CATEGORIES, each with service ITEMS inside.
 
@@ -11,6 +11,9 @@
      and paste it above the closing  ];  at the bottom.
 
    "short" is the one-line summary shown on the Home page card.
+   "icon" picks the small logo beside the heading. Available names:
+     accounting, excel, payroll, tax, secretarial, audit, hni, startup
+   "color" is the icon colour (a hex code like #1D6F42).
    Keep text between quotes. Don't remove commas, braces or brackets.
    ================================================================ */
 
@@ -18,6 +21,7 @@ const SERVICES = [
 
   {
     title: "Accounting & Compliance Services",
+    icon: "accounting", color: "#2563a8",
     short: "Project-based support, offshore & onshore BPO, backlog management.",
     items: [
       { name: "Project-Based Support Services", desc: "Flexible engagement models for short-term or specialised accounting tasks, system clean-ups, and backlog management." },
@@ -28,6 +32,7 @@ const SERVICES = [
 
   {
     title: "Automation & Excel-Based Tools",
+    icon: "excel", color: "#1D6F42",
     short: "Excel automation, GST reconciliation tools, cloud accounting for SMEs.",
     items: [
       { name: "Excel Automation Tools", desc: "Automation tools for professionals and enterprises." },
@@ -39,6 +44,7 @@ const SERVICES = [
 
   {
     title: "Payroll Processing & Employment Law Services",
+    icon: "payroll", color: "#0e7c86",
     short: "Monthly payroll, EPF/ESIC/TDS compliance, labour law advisory.",
     items: [
       { name: "Client Set-up & Employee Onboarding", desc: "Structured onboarding of entities and employees onto payroll." },
@@ -51,6 +57,7 @@ const SERVICES = [
 
   {
     title: "Tax Advisory & Compliance",
+    icon: "tax", color: "#a03535",
     short: "Direct tax, international tax, transfer pricing, and GST end-to-end.",
     items: [
       { name: "Domestic Direct Tax", desc: "Return filing, tax planning, representations, assessments, TDS compliance." },
@@ -62,6 +69,7 @@ const SERVICES = [
 
   {
     title: "Corporate Secretarial Services",
+    icon: "secretarial", color: "#4f46a5",
     short: "Incorporation, ROC filings, statutory registers, event-based compliance.",
     items: [
       { name: "Company Incorporation", desc: "End-to-end incorporation of companies and LLPs." },
@@ -73,6 +81,7 @@ const SERVICES = [
 
   {
     title: "Internal Audit & Due Diligence",
+    icon: "audit", color: "#875a12",
     short: "Risk-based audits, IFC design, fraud risk assessment, M&A diligence.",
     items: [
       { name: "Internal Audit", desc: "Risk-based audits, process improvements, operational reviews." },
@@ -84,6 +93,7 @@ const SERVICES = [
 
   {
     title: "HNI Accounts & Tax Advisory",
+    icon: "hni", color: "#b28a35",
     short: "Accounting and tax management for high-net-worth individuals.",
     items: [
       { name: "Engagement Start-up", desc: "Structured onboarding of personal finances and entities." },
@@ -94,6 +104,7 @@ const SERVICES = [
 
   {
     title: "Startup Consultancy Services",
+    icon: "startup", color: "#e07020",
     short: "Registrations, MIS & FP&A, valuations, investor documentation.",
     items: [
       { name: "Registrations", desc: "GST, MSME, Startup India, LLP, and Private Limited registrations." },
